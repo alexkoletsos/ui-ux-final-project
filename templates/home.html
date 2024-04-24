@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<style>
+    .custom-row {
+        padding: 20px; /* Add padding to the rows */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        display: flex; /* Use flexbox to align items */
+        justify-content: space-between; /* Align items with space between */
+        border: 1px solid rgb(236, 236, 236);
+        border-radius: 15px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+        margin-bottom: 15px;
+        margin-top: 10px;
+    }
+    .button-container {
+        position: relative;
+    }
+    .lesson-button {
+        position: absolute;
+        top: 20px;
+        font-size: 18px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 15px;
+        background-color: rgb(57, 113, 224);
+        text-decoration: none;
+        color: rgb(254, 254, 152);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    #start-lesson {
+        left: 20px;
+    }
+    #start-lesson:hover {
+        color: rgb(254, 254, 152);
+        background-color: rgb(37, 96, 214);
+    }
+    #resume-lesson {
+        right: 20px;
+    }
+    #resume-lesson:hover {
+        color: rgb(254, 254, 152);
+        background-color: rgb(37, 96, 214);
+    }
+    .custom-row {
+        padding: 20px; /* Add padding to the rows */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        display: flex; /* Use flexbox to align items */
+        justify-content: space-between; /* Align items with space between */
+        align-items: center; /* Center items vertically */
+    }
+
+    .custom-row .arrow-down {
+        margin-left: auto; /* Push the arrow to the right */
+    }
+    .list-group-item {
+        margin-left: 30px; /* Add left margin to list items */
+        border: none; /* Remove border from list items */
+        font-size: 24px;
+    }
+</style>
+<script>
+    // Toggle carrot arrow direction and collapse behavior when row is clicked
+    $(document).ready(function() {
+    $('.custom-row').click(function() {
+        console.log("Clicked"); // Debugging
+        var arrowDown = $(this).find('.arrow-down');
+        arrowDown.toggleClass('collapsed');
+        var rotation = arrowDown.hasClass('collapsed') ? '180deg' : '0deg';
+        arrowDown.css('transform', 'rotate(' + rotation + ')');
+        var target = $($(this).attr('href'));
+        target.toggleClass('show');
+    });
+});
+</script>
+<div class="row" style="justify-content: center; padding-top: 20px; font-weight: bold;">
+    <h2>welcome, frisbee newbie!</h2>
+</div>
+<div class="row" style="justify-content: center; font-size: 20px; color: gray; text-align: center;">
+    <p>frisbee safe: an interactive website designed to teach <br> you the basic rules of contact in ultimate frisbee.</p>
+</div>
+<hr>
+<div class="row">
+    <div class="col">
+        <h2 class="custom-row" data-toggle="collapse" href="#contactRules" role="button" aria-expanded="false" aria-controls="contactRules">
+            rules of contact
+            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
+        </h2>
+        <div class="collapse" id="contactRules">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="rules/contact-while-throwing">contact while throwing</a></li>
+                <li class="list-group-item"><a href="rules/contact-while-catching">contact while catching</a></li>
+                <li class="list-group-item"><a href="rules/contact-away-from-the-disc">contact away from the disc</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h2 class="custom-row" data-toggle="collapse" href="#identifyFouls" role="button" aria-expanded="false" aria-controls="identifyFouls">
+            identifying fouls
+            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
+        </h2>
+        <div class="collapse" id="identifyFouls">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="identifying-fouls/offensive">offensive fouls</a></li>
+                <li class="list-group-item"><a href="identifying-fouls/defensive">defensive fouls</a></li>
+                <li class="list-group-item"><a href="identifying-fouls/dangerous-plays">dangerous plays</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="button-container" style="margin-bottom: 100px;">
+    <a href="/rules" id="start-lesson" class="lesson-button">start learning</a>
+    <a href="#" id="resume-lesson" class="lesson-button">resume learning</a>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>  
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+
+    <style>
+        /* Custom styles for Frisbee Safe navbar */
+        .navbar {
+            height: 100px; /* Adjust the height as needed */
+        }
+
+        .navbar-brand {
+            font-size: 2em; /* Increase font size */
+            margin-right: 10px;
+            line-height: 100px; /* Center vertically */
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler-icon {
+            font-size: 2em; /* Increase font size */
+        }
+
+        .menu-icon {
+            font-size: 3em; /* Adjust font size for larger three lines */
+            color: #000; /* Adjust color as needed */
+            cursor: pointer;
+        }
+
+        .menu-icon:hover {
+            color: gray; /* Adjust hover color as needed */
+        }
+    </style>
+
+    <script>
+        function toNavbar() {
+            window.location.href = "/navbar"; // Replace with the URL of your navbar page
+        }
+    </script>
+
+    <title>frisbee safe</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid"> <!-- Added container fluid -->
+        <a class="navbar-brand" href="/">frisbee safe <i class="fas fa-disc"></i></a>
+        <div class="ml-auto"> <!-- Use ml-auto to push the three lines icon to the right -->
+            <span class="menu-icon" onclick="toNavbar()">&#9776;</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">   
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

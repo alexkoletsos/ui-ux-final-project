@@ -1,0 +1,192 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let foul = {{ foul | tojson }}
+    let fouls = {{ fouls | tojson }}
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('next-page').addEventListener('click', function(event) {
+        event.preventDefault();
+        let currentUrl = window.location.href;
+        let foulType = decodeURIComponent(currentUrl.split('/').pop().replace('-', ' '));
+        let currentIndex = fouls.findIndex(foul => foul.foul_type.toLowerCase() === foulType);
+        let nextIndex = (currentIndex + 1) % fouls.length;
+        let nextFoulType = fouls[nextIndex].foul_type.toLowerCase();
+        let nextUrl;
+        if (nextIndex === 0) {
+            nextUrl = '/quiz';
+        } else {
+            nextUrl = '/identifying-fouls/' + nextFoulType.replace(/ /g, '-');
+        }
+        window.location.href = nextUrl;
+    });
+
+    document.getElementById('prev-page').addEventListener('click', function(event) {
+        event.preventDefault();
+        let currentUrl = window.location.href;
+        let foulType = decodeURIComponent(currentUrl.split('/').pop().replace('-', ' '));
+        let currentIndex = fouls.findIndex(foul => foul.foul_type.toLowerCase() === foulType);
+        let prevIndex = (currentIndex - 1 + fouls.length) % fouls.length;
+        let prevFoulType = fouls[prevIndex].foul_type.toLowerCase();
+        let prevUrl;
+        if (prevIndex === rules.length - 1) {
+            prevUrl = '/rules/contact-away-from-the-disc';
+        }
+        else {
+            prevUrl = '/identifying-fouls/' + prevFoulType.replace(/ /g, '-');
+        }
+        window.location.href = prevUrl;
+    });
+    document.getElementById('next-example').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Select the container element
+    let container = document.querySelector('.media-box');
+
+    // Check if the container currently contains a video
+    if (container.querySelector('video')) {
+        // If a video is present, replace it with three image columns
+        container.innerHTML = `
+         <div class="row justify-content-center">
+                <div class="col-lg-3">
+                    <img src="{{ url_for('static', filename=foul.media[1][0]) }}" class="img-fluid" id="{{ foul.foul_type }} img1">
+                </div>
+                <div class="col-lg-3">
+                    <img src="{{ url_for('static', filename=foul.media[1][1]) }}" class="img-fluid" id="{{ foul.foul_type }} img2>
+                </div>
+                <div class="col-lg-3">
+                    <img src="{{ url_for('static', filename=foul.media[1][2]) }}" class="img-fluid" id="{{ foul.foul_type }} img3>
+                    <a href="#" id="prev-example" style="position: absolute; top: 50%; right: -10%; transform: translateY(-50%); font-size: 32px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" style="fill: gray;" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg>
+                </a>
+                </div>
+            </div>
+        `;
+
+        // Add event listeners to each image
+        document.getElementById('{{ foul.foul_type }} img1').addEventListener('click', function() {
+                this.src = "{{ url_for('static', filename=foul.media[2][0]) }}";
+            });
+
+            document.getElementById('{{ foul.foul_type }} img2').addEventListener('click', function() {
+                this.src = "{{ url_for('static', filename=foul.media[2][1]) }}";
+            });
+
+            document.getElementById('{{ foul.foul_type }} img3').addEventListener('click', function() {
+                this.src = "{{ url_for('static', filename=foul.media[2][2]) }}";
+            });
+    }
+    });
+    document.getElementById('prev-example').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Select the container element
+    let container = document.querySelector('.media-box');
+
+    container.innerHTML = `
+        <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <video controls>
+                <source src="{{ url_for('static', filename=foul.media[0]) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <a href="#" id="next-example" style="position: absolute; top: 50%; right: -10%; transform: translateY(-50%); font-size: 32px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" style="fill: gray;" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    `;
+});
+});
+</script>
+<style>
+    .custom-card {
+        border: 1px solid black;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+    video {
+        width: 100%;
+        height: 100%;
+        /*object-fit: cover; /* Ensure media fills the container */
+    }
+    .img-fluid {
+        width: 100%;
+        height: 100%;
+        /*object-fit: cover; /* Ensure media fills the container */
+    }
+    .lesson-button-container {
+        position: relative;
+    }
+
+    .lesson-button {
+        position: absolute;
+        bottom: 20px; /* Adjust as needed */
+        font-size: 18px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 5px;
+        background-color: rgb(57, 113, 224);
+        text-decoration: none;
+        color: rgb(254, 254, 152);
+    }
+
+    a:hover {
+        text-decoration: none; 
+        color: inherit; 
+    }
+
+    #prev-page {
+        left: 20px;
+    }
+
+    #next-page {
+        right: 20px;
+    }
+
+</style>
+<h1 style="padding: 20px; font-size: 40px;">identifying fouls: {{ foul.foul_type }} </h1>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12"> 
+            <div class="card custom-card">
+                <div class="card-body" style="font-size: 20px; color: gray;">
+                    <h3>recall:</h3>
+                    {% for sentence in foul.relevant_info %}
+                        <p style="padding-left: 30px;">{{ loop.index }}. {{ sentence }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h1 style="padding: 25px; font-size: 35px; "> let's see it in real-time. </h1>
+<!-- Second row with video, images, and description -->
+<div class="container-fluid media-box mt-4" style="margin-bottom: 125px;">
+    <div class="row justify-content-center" style="margin-bottom: 20px;">
+        <!-- Video column -->
+        <div class="col-lg-8">
+            <video controls>
+                <source src="{{ url_for('static', filename=foul.media[0]) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- Right arrow icon -->
+            <a href="#" id="next-example" style="position: absolute; top: 50%; right: -10%; transform: translateY(-50%); font-size: 32px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" style="fill: gray;" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="lesson-button-container">
+    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="next-page" class="lesson-button">next</a>
+</div>
+{% endblock %}
