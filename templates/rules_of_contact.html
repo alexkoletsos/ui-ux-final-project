@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let rule = {{ rule | tojson }}
+</script>
+<style>
+    .custom-card {
+        border: 1px solid black;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+    video, .img-fluid {
+        width: 100%;
+        height: 100%;
+        /*object-fit: cover; /* Ensure media fills the container */
+    }
+</style>
+<h1 style="padding: 20px; font-size: 50px;">rules of contact </h1>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12"> <!-- Change col-lg-8 to col-lg-12 -->
+            <div class="card custom-card">
+                <div class="card-body" style="font-size: 34px;">
+                    <h2 style="padding: 15px; font-size: 40px;">{{ rule.contact_type }}</h2>
+                    {% for sentence in rule.relevant_info %}
+                        <p style="padding-left: 30px;">{{ sentence }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h1 style="padding: 25px; font-size: 40px;">examples & descriptions </h1>
+<!-- Second row with video, images, and description -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Video column -->
+        <div class="col-lg-4">
+            <video controls>
+                <source src="{{ url_for('static', filename=rule.media[0]) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- First image column -->
+        <div class="col-lg-2">
+            <img src="{{ url_for('static', filename='catching_pic_1.jpg') }}" alt="Catching Image 1" class="img-fluid">
+        </div>
+        <!-- Second image column -->
+        <div class="col-lg-2">
+            <img src="{{ url_for('static', filename='catching_pic_2.jpg') }}" alt="Catching Image 2" class="img-fluid">
+        </div>
+        <!-- Description box column -->
+        <div class="col-lg-3">
+            <div class="card custom-card" style="height: 100%;">
+                <div class="card-body" style="font-size: 29px;">
+                    {{ rule.media[2] }}
+                </div>
+            </div>
+        </div>
+        <!-- Right arrow icon -->
+        <div class="col-sm-1">
+            <a href="#" id="next-example" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-size: 32px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 4.354a.5.5 0 0 1 0 .707L11.207 8l-2.853 2.854a.5.5 0 0 1-.708-.708l3-3a.5.5 0 0 1 0 .707l-3-3a.5.5 0 0 1-.708.708L11.207 8l-2.853-2.854a.5.5 0 0 1 .708-.708z"/>
+                </svg>
+            </a>            
+        </div>
+    </div>
+</div>
+{% endblock %}

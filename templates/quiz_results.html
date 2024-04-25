@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let result = {{ result | tojson }}
+    let correct_num = {{ correct_num | tojson }}
+</script>
+<style>
+    .custom-card {
+        border: 1px solid black;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+    video, .img-fluid {
+        width: 100%;
+        height: 100%;
+        /*object-fit: cover; /* Ensure media fills the container */
+    }
+    .arrow{
+        padding-top: 40px;
+    }
+</style>
+<h2 style="padding: 20px;">your quiz results</h2>
+<div class="container-fluid">
+    <div class="row" style="padding-left: 20px;">
+        {% if correct_num == 5 %}
+            <p>Congratulations!</p>
+        {% else %}
+            <p>Good work!</p>
+        {% endif %}
+    </div>
+    <div class="row" style="padding-left: 20px;">
+        <p>You answered {{ correct_num }} / 5 questions correctly.</p>
+    </div>
+</div> 
+{% endblock %}

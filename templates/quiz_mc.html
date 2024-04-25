@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let question = {{ question | tojson }}
+</script>
+<style>
+    .custom-card {
+        border: 1px solid black;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+    video, .img-fluid {
+        width: 100%;
+        height: 100%;
+        /*object-fit: cover; /* Ensure media fills the container */
+    }
+    .arrow{
+        padding-top: 40px;
+    }
+</style>
+<h2 style="padding: 20px;">test your frisbee knowledge!</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 style="padding: 15px;">{{ question.question }}</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if question.media is not none or question.video is not none %}
+            <div class="col-lg-6">
+                {% if question.video is none %}
+                
+                    {% if question.media|length == 3 %}
+                        <div class="row">
+                            {% for frame, picture in question.media.items() %}
+                                <div class="col-lg-4">
+                                    <img src="{{ url_for('static', filename=picture) }}" alt="Quiz Image" class="img-fluid">
+                                    <p>{{ frame }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="col-lg-12">
+                            <img src="{{ url_for('static', filename=question.media[0]) }}" alt="Quiz Image" class="img-fluid">
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    <video controls>
+                        <source src="{{ url_for('static', filename=question.video) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+
+            </div>
+        {% endif %}
+        <div class="{% if question.media is none and question.video is none %}col-lg-12{% else %}col-lg-6{% endif %}">
+            <div class="card custom-card">
+                <div class="card-body" style="font-size: 34px;">
+                    <h2 style="padding: 15px; color:grey;">my response</h2>
+                    {% for response in question.responses %}
+                        <div class="form-check">
+                            <!-- TO DO: find a way to make the response id unique without it being the response value -->
+                            <input class="form-check-input" type="radio" name="response" id="{{ response }}" value="{{ response }}" style="position: relative;" onmouseover="makeClickable(this)">
+                            <label class="form-check-label" style="font-size: 20px;" for="{{ response }}" onmouseover="makeClickable(this)">
+                                {{ response }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row arrow">
+        <div class="col-lg-12">
+            <a href="#" id="next-question" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-size: 32px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="black" class="arrow-right" viewBox="0 0 16 16">
+                    <path d="M8.354 4.354a.5.5 0 0 1 0 .707L11.207 8l-2.853 2.854a.5.5 0 0 1-.708-.708l3-3a.5.5 0 0 1 0 .707l-3-3a.5.5 0 0 1-.708.708L11.207 8l-2.853-2.854a.5.5 0 0 1 .708-.708z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<style>
+    .custom-row {
+        padding: 20px; /* Add padding to the rows */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        display: flex; /* Use flexbox to align items */
+        justify-content: space-between; /* Align items with space between */
+    }
+    .custom-row .arrow-down {
+        margin-left: 10px; /* Add margin to separate arrow from text */
+    }
+    .list-group-item {
+        margin-left: 30px; /* Add left margin to list items */
+        border: none; /* Remove border from list items */
+        font-size: 24px;
+    }
+</style>
+<div class="row">
+    <div class="col">
+        <h2 class="custom-row" data-toggle="collapse" href="#contactRules" role="button" aria-expanded="false" aria-controls="contactRules">
+            rules of contact
+            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
+        </h2>
+        <div class="collapse" id="contactRules">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="rules/contact-while-throwing">contact while throwing</a></li>
+                <li class="list-group-item"><a href="rules/contact-while-catching">contact while catching</a></li>
+                <li class="list-group-item"><a href="rules/contact-away-from-the-disc">contact away from the disc</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h2 class="custom-row" data-toggle="collapse" href="#identifyFouls" role="button" aria-expanded="false" aria-controls="identifyFouls">
+            identifying fouls
+            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
+        </h2>
+        <div class="collapse" id="identifyFouls">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="">offensive fouls</a></li>
+                <li class="list-group-item"><a href="contact_while_catching.html">defensive fouls</a></li>
+                <li class="list-group-item"><a href="contact_away_from_disc.html">dangerous plays</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h2 class="custom-row" data-toggle="collapse" href="#testKnowledge" role="button" aria-expanded="false" aria-controls="testKnowledge">
+            test your knowledge
+            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
+        </h2>
+        <div class="collapse" id="testKnowledge">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="quiz/1">start the quiz</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle carrot arrow direction and collapse behavior when row is clicked
+    $(document).ready(function() {
+    $('.custom-row').click(function() {
+        console.log("Clicked"); // Debugging
+        var arrowDown = $(this).find('.arrow-down');
+        arrowDown.toggleClass('collapsed');
+        var rotation = arrowDown.hasClass('collapsed') ? '180deg' : '0deg';
+        arrowDown.css('transform', 'rotate(' + rotation + ')');
+        var target = $($(this).attr('href'));
+        target.toggleClass('show');
+    });
+});
+</script>
+
+{% endblock %}
