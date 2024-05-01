@@ -49,6 +49,10 @@
         .menu-icon:hover {
             color: gray; /* Adjust hover color as needed */
         }
+        .container-fluid {
+            padding: 0px 0px 0px 0px;
+            overflow-x: hidden;
+        }
     </style>
 
     <script>
@@ -61,9 +65,12 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #F5F5DC;">
     <div class="container-fluid"> <!-- Added container fluid -->
-        <a class="navbar-brand" href="/">frisbee safe <i class="fas fa-disc"></i></a>
+        <a class="navbar-brand" href="/" style="color: #28511c;">
+            <img src="https://em-content.zobj.net/source/microsoft/378/flying-disc_1f94f.png" alt="Flying Disc" style="height: 60px; margin-right: 10px;">
+            frisbee safe 
+        <i class="fas fa-disc"></i></a>
         <div class="ml-auto"> <!-- Use ml-auto to push the three lines icon to the right -->
             <span class="menu-icon" onclick="toNavbar()">&#9776;</span>
         </div>
