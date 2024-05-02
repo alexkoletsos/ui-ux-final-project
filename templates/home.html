@@ -1,120 +1,95 @@
 {% extends "layout.html" %}
 {% block content %}
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anta&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anta&family=Antonio:wght@100..700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 <style>
     .custom-row {
         padding: 20px; /* Add padding to the rows */
         cursor: pointer; /* Change cursor to pointer on hover */
-        display: flex; /* Use flexbox to align items */
-        justify-content: space-between; /* Align items with space between */
         border: 1px solid rgb(236, 236, 236);
         border-radius: 15px;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
-        margin-bottom: 15px;
-        margin-top: 10px;
-    }
-    .button-container {
-        position: relative;
+        margin: 15px;
+        background-color: #F5F5DC;
     }
     .lesson-button {
-        position: absolute;
         top: 20px;
         font-size: 18px;
         padding: 10px;
         border: 1px solid gray;
         border-radius: 15px;
-        background-color: rgb(57, 113, 224);
+        background-color: rgb(49,114,182);
         text-decoration: none;
-        color: rgb(254, 254, 152);
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+        color: #F5F5DC;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow */
+        margin-top: 30px !important;
+    }
+    #start-lesson {
+        margin-top: 30px !important;
     }
     a:hover {
         text-decoration: none;
     }
-    #start-lesson {
-        left: 20px;
-    }
     #start-lesson:hover {
-        color: rgb(254, 254, 152);
-        background-color: rgb(37, 96, 214);
+        color: #F5F5DC;
+        background-color: rgb(74,164,231);
     }
-    #resume-lesson {
-        right: 20px;
+    #start-lesson {
+        margin-top: 40px;
     }
-    #resume-lesson:hover {
-        color: rgb(254, 254, 152);
-        background-color: rgb(37, 96, 214);
+    body {
+        font-family: 'Kanit', sans-serif; /* Use fallback font if SportsCenter is unavailable */
+        font-weight: 400;
     }
-    .custom-row {
-        padding: 20px; /* Add padding to the rows */
-        cursor: pointer; /* Change cursor to pointer on hover */
-        display: flex; /* Use flexbox to align items */
-        justify-content: space-between; /* Align items with space between */
-        align-items: center; /* Center items vertically */
-    }
-
-    .custom-row .arrow-down {
-        margin-left: auto; /* Push the arrow to the right */
-    }
-    .list-group-item {
-        margin-left: 30px; /* Add left margin to list items */
-        border: none; /* Remove border from list items */
-        font-size: 24px;
+    .kanit-regular {
+        font-family: "Kanit", sans-serif;
+        font-weight: 400;
+        font-style: normal;
     }
 </style>
-<script>
-    // Toggle carrot arrow direction and collapse behavior when row is clicked
-    $(document).ready(function() {
-    $('.custom-row').click(function() {
-        console.log("Clicked"); // Debugging
-        var arrowDown = $(this).find('.arrow-down');
-        arrowDown.toggleClass('collapsed');
-        var rotation = arrowDown.hasClass('collapsed') ? '180deg' : '0deg';
-        arrowDown.css('transform', 'rotate(' + rotation + ')');
-        var target = $($(this).attr('href'));
-        target.toggleClass('show');
-    });
-});
-</script>
-<div class="row" style="justify-content: center; padding-top: 20px; font-weight: bold;">
-    <h2>welcome, frisbee newbie!</h2>
+<div class="header" style = "background-color: #28511c; padding: 100px; color: white; text-align: center;">
+<div class="row" style="justify-content: center; padding-top: 20px; font-size: 40px;">
+    welcome, frisbee newbie!
 </div>
-<div class="row" style="justify-content: center; font-size: 20px; color: gray; text-align: center;">
+<div class="row" style="justify-content: center; font-size: 20px; color: #F5F5DC; text-align: center; font-family: 'Titillium Web'; font-weight: 100; margin-bottom: 20px;">
     <p>frisbee safe: an interactive website designed to teach <br> you the basic rules of contact in ultimate frisbee.</p>
 </div>
-<hr>
-<div class="row">
+<a href="/rules" id="start-lesson" class="lesson-button">begin learning</a>
+</div>
+<div class="custom-row" style="display: flex; align-items: center;">
+    <div class="col-auto">
+        <h2 style="font-weight: 400; color: #28511c; width: 275px;">course breakdown:</h2>
+    </div>
     <div class="col">
-        <h2 class="custom-row" data-toggle="collapse" href="#contactRules" role="button" aria-expanded="false" aria-controls="contactRules">
-            rules of contact
-            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
-        </h2>
-        <div class="collapse" id="contactRules">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="rules/contact-while-throwing">contact while throwing</a></li>
-                <li class="list-group-item"><a href="rules/contact-while-catching">contact while catching</a></li>
-                <li class="list-group-item"><a href="rules/contact-away-from-the-disc">contact away from the disc</a></li>
-            </ul>
+        <div class="progress" style="width: 100%; height: 32px; color: #F5F5DC;">
+            <div class="progress-bar" role="progressbar" style="width: 33%; background-color: rgb(49,114,182); color: #F5F5DC;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">rules of contact</div>
+            <div class="progress-bar" role="progressbar" style="width: 33%; background-color: #28511c; color: #F5F5DC;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">identifying fouls</div>
+            <div class="progress-bar" role="progressbar" style="width: 34%; background-color: black; color: #F5F5DC;" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100">test your knowledge</div>
         </div>
     </div>
 </div>
-<div class="row">
+<div class="custom-row" style="display: flex; align-items: center;">
+    <div class="col-auto">
+        <h2 style="font-weight: 400; color: #28511c; width: 275px;">your progress:</h2>
+    </div>
     <div class="col">
-        <h2 class="custom-row" data-toggle="collapse" href="#identifyFouls" role="button" aria-expanded="false" aria-controls="identifyFouls">
-            identifying fouls
-            <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
-        </h2>
-        <div class="collapse" id="identifyFouls">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="identifying-fouls/offensive">offensive fouls</a></li>
-                <li class="list-group-item"><a href="identifying-fouls/defensive">defensive fouls</a></li>
-                <li class="list-group-item"><a href="identifying-fouls/dangerous-plays">dangerous plays</a></li>
-            </ul>
+        <div class="progress" style="width: 100%; height: 32px; color: #F5F5DC; overflow: hidden;">
+            <div class="progress-bar" role="progressbar" style="width: 33%; border: none; color: #28511c; background-color: white; border: 0.5px solid rgb(49,114,182); border-radius: 5px 0px 0px 5px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            <div class="progress-bar" role="progressbar" style="width: 33%; border: none; color: #28511c; background-color: white; border: 0.5px solid #28511c;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            <div class="progress-bar" role="progressbar" style="width: 34%; border: none; color: #28511c; background-color: white; border: 0.5px solid black; border-radius: 0px 5px 5px 0px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
         </div>
     </div>
-</div>
-<div class="button-container" style="margin-bottom: 100px;">
-    <a href="/rules" id="start-lesson" class="lesson-button">start learning</a>
-    <a href="#" id="resume-lesson" class="lesson-button">resume learning</a>
 </div>
 {% endblock %}
