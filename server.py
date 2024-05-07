@@ -5,14 +5,26 @@ app = Flask(__name__)
 
 # Data
 rules = [
-    {"contact_type": "contact while throwing",
-     "relevant_info": ["non-minor contact between the thrower and the marker is considered a foul; examples include contact with the thrower’s hand during the throwing motion.", "contact occurring during the follow through (after the disc has been released) is not a foul.", "if the foul is called after the throw goes off and the pass is not completed, the disc returns to the thrower.", "when a foul is committed by the marker, the stall count goes down to 0."],
+    {
+     "id": 1,
+     "contact_type": "contact while throwing",
+     "definition": "non-minor contact between the thrower and the marker is considered a foul on the defender; examples include contact with the thrower’s hand during the throwing motion.",
+     "terms": ['thrower', 'marker', 'stall count'],
+     "relevant_info": ["contact occurring during the follow through (after the disc has been released) is not a foul.", "if the foul is called after the throw goes off and the pass is not completed, the disc returns to the thrower.", "when a foul is committed by the marker, the stall count goes down to 0."],
+     "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by-frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]},
+    {
+     "id": 2,
+     "contact_type": "contact while catching",
+     "definition": "non-minor contact between opposing players while, or directly after, either player makes a play on the disc; examples include contact with anopponent’s extended arms or hands that are about to, or already are, contacting the disc.",
+     "terms": ['play on the disc', 'legitimately positioned', 'contested', 'uncontested'],
+     "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "if a catching foul occurs and is uncontested, the player fouled gains possession at the point of the infraction. If the call is contested, the disc goes back to the thrower."],
      "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by- frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]},
-    {"contact_type": "contact while catching",
-     "relevant_info": ["non-minor contact between opposing players while, or directly after, either player makes a play on the disc; examples include contact with an opponent’s extended arms or hands that are about to, or already are, contacting the disc.", "if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "if a catching foul occurs and is uncontested, the player fouled gains possession at the point of the infraction. If the call is contested, the disc goes back to the thrower."],
-     "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by- frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]},
-    {"contact_type": "contact away from the disc",
-     "relevant_info": ["it is the responsibility of all players to avoid contact in any way possible. violent impact with legitimately positioned opponents constitutes harmful endangerment, a foul, and must be strictly avoided.", "if the foul is accepted, the fouled player may make up any positional disadvantage caused by the foul."],
+    {
+     "id": 3,
+     "contact_type": "contact away from the disc",
+     "definition": "it is the responsibility of all players to avoid contact in any way possible. violent impact with legitimately positioned opponents constitutes harmful endangerment, a foul, and must be strictly avoided.",
+     "terms": ['violent impact', 'endangerment'],
+     "relevant_info": ["if the foul is accepted, the fouled player may make up any positional disadvantage caused by the foul."],
      "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by- frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]}
     ]
 fouls = [
@@ -102,7 +114,8 @@ quiz_ans = [
 
 @app.route('/')
 def home():
-    return render_template('home.html') 
+    is_home_page = True
+    return render_template('home.html', is_home_page = is_home_page) 
 
 @app.route('/navbar')
 def navbar():
@@ -127,17 +140,23 @@ def identifying_fouls(foul_type):
             break
     return render_template('identifying_fouls.html', foul=item, fouls=fouls)
 
-@app.route('/identifying-fouls')
-def identifying_fouls_home():
-    return render_template('identifying_fouls_home.html')
-
-@app.route('/rules')
-def rules_home():
-    return render_template('rules_of_contact_home.html')
-
-@app.route('/quiz')
-def quiz_home():
-    return render_template('quiz_home.html')
+@app.route('/<string:section>')
+def section_home(section):
+    description = ''
+    url = ''
+    if section == 'rules':
+        section = 'part 1: rules of contact'
+        description = 'frisbee is a non-contact sport, so what happens when contact is drawn?'
+        url = 'rules/contact-while-throwing'
+    if section == 'identifying-fouls':
+        section = 'part 2: identifying fouls'
+        description = "frisbee is a self-refereed sport, so let's learn how to make the right call against our opponents."
+        url = 'identifying-fouls/offensive'
+    if section == 'quiz':
+        section = 'part 3: test your knowledge'
+        description = "you've completed the lesson! find out if you're a frisbee expert."
+        url = 'quiz/1'
+    return render_template('section_home.html', section=section, description=description, url=url)
 
 
 @app.route('/quiz/<string:id>')
