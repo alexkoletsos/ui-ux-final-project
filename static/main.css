@@ -2,3 +2,157 @@
     color: red;
     margin: 10px;
 }
+.custom-row {
+    padding: 20px; /* Add padding to the rows */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border: 1px solid rgb(236, 236, 236);
+    border-radius: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+    margin: 15px;
+    background-color: #F5F5DC;
+    margin-bottom: 20px;
+}
+.button-container {
+    display: flex; /* Make it a flex container */
+    justify-content: center; /* Center its child elements horizontally */
+    margin-bottom: 100px;
+    position: relative;
+}
+.flying-person {
+    position: absolute;
+        top: 0;
+        left: 0;
+        width: 25%; /* Make the image twice as wide */
+        height: auto; /* Maintain aspect ratio */
+        transform: translate(100%, -6.2%); /* Move the image to the left */
+        z-index: -1; /* Ensure the image is below the button */
+}
+.lesson-button {
+    position: absolute;
+    width: 105px; /* Adjust width to make it wider */
+    height: 26px; /* Adjust height to make it flatter */
+    font-size: 18px;
+    padding: 0; /* Remove padding to make the content centered */
+    border: 1px solid transparent; /* Remove border */
+    border-radius: 50%; /* Make the button a circle */
+    background-color: rgb(49,114,182);
+    text-decoration: none;
+    color: #F5F5DC;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow */
+    margin-top: 30px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 300;
+}
+#start-lesson {
+    margin-top: 30px !important;
+}
+a:hover {
+    text-decoration: none;
+}
+#start-lesson:hover {
+    color: #F5F5DC;
+    background-color: rgb(74,164,231);
+}
+#start-lesson {
+    margin-top: 40px;
+}
+body {
+    font-family: 'Kanit', sans-serif; 
+    font-weight: 200;
+}
+.end-zone {
+    width: 90%;
+    height: 70%; /* Adjust the height as needed */
+    border: 5px solid #F5F5DC;
+    margin: 0 auto;
+    position: relative;
+}
+
+.end-zone::before,
+.end-zone::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background-color: #28511c;
+    top: 0; /* Position the lines at the top of the end zone */
+}
+
+.end-zone::before {
+    border: 3px solid #F5F5DC;
+    left: 20%;
+}
+
+.end-zone::after {
+    border: 3px solid #F5F5DC;
+    right: 20%;
+}
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+.kanit-regular {
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.begin-button {
+    top: 20px;
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 15px;
+    background-color: rgb(49,114,182);
+    text-decoration: none;
+    color: #F5F5DC;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow */
+    margin-top: 30px !important;
+}
+.navbar-row {
+    padding: 20px; /* Add padding to the rows */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border: 1px solid rgb(236, 236, 236);
+    border-radius: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #F5F5DC;
+    display: flex; /* Use flexbox to align items */
+    justify-content: space-between; /* Align items with space between */
+}
+.navbar-row .arrow-down {
+    margin-left: 10px; /* Add margin to separate arrow from text */
+}
+.list-group-item {
+    margin-left: 40px; /* Add left margin to list items */
+    margin-right: 40px; /* Add left margin to list items */
+    border: none; /* Remove border from list items */
+    font-size: 24px;
+    background-color: #F5F5DC;
+    margin-bottom: 10px;
+}
+body {
+    padding-top: 100px;
+    padding-bottom: 60px;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent;
+    padding: 20px;
+    text-align: center;
+    font-weight: 300;
+}
+.col {
+    padding-left: 0px;
+    padding-right: 0px;
+}

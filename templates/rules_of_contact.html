@@ -6,72 +6,109 @@
     let rules = {{ rules | tojson }}
     let currentRuleIndex = 0;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        function showNextExample() {
+    function showContent(contentType, element) {
+        var videoContainer = document.getElementById("video-container");
+        var framesContainer = document.getElementById("frames-container");
+        var descriptionContainer = document.getElementById("description-container");
+        
+        // Remove the "selected-" class from all options
+        var options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.classList.remove('selected-video');
+            option.classList.remove('selected-frame-by-frame');
+            option.classList.remove('selected-description');
+            option.classList.remove('selected-next-example');
+        });
+
+        // Add the "selected-" class to the clicked option
+        if (element) {
+            options.forEach(option => {
+                if (option.textContent.toLowerCase().replace(/-/g, ' ') === contentType.replace(/-/g, ' ')) {
+                    if (option.textContent.toLowerCase().replace(/-/g, ' ') === 'next example') {
+                        option.classList.add('selected-video');
+                    }
+                    else {
+                        option.classList.add('selected-' + contentType);
+                    }
+                }
+            });
+        }
+        
+        // Show or hide containers based on the contentType
+        if (contentType === 'video') {
+            videoContainer.style.display = "flex";
+            framesContainer.style.display = "none";
+            descriptionContainer.style.display = "none";
+        } else if (contentType === 'frame-by-frame') {
+            videoContainer.style.display = "none";
+            framesContainer.style.display = "block";
+            descriptionContainer.style.display = "none";
+        } else if (contentType === 'description') {
+            videoContainer.style.display = "none";
+            framesContainer.style.display = "none";
+            descriptionContainer.style.display = "block";
+        } else if (contentType === 'next-example') {
+            showNextExample();
+            videoContainer.style.display = "flex";
+            framesContainer.style.display = "none";
+            descriptionContainer.style.display = "none";
+        }
+    }
+
+    function showNextExample() {
+        var header = document.querySelector(".card-label");
         currentRuleIndex = (currentRuleIndex + 1) % rule.media.length;
         console.log(currentRuleIndex);
+        header.textContent = "example " +  (currentRuleIndex + 1);
         document.querySelector('video source').src = '/static/' + rule.media[currentRuleIndex][0];
         document.querySelector('.img1').src = '/static/' + rule.media[currentRuleIndex][1][0];
         document.querySelector('.img2').src = '/static/' + rule.media[currentRuleIndex][1][1];
-        document.querySelector('.ex-describe').innerText = rule.media[currentRuleIndex][2];
+        document.querySelector('.description-container').innerText = rule.media[currentRuleIndex][2];
     }
 
-    document.getElementById('next-example').addEventListener('click', function(event) {
-        event.preventDefault();
-        showNextExample();
-    });
-
-    document.getElementById('prev-page').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            let currentUrl = window.location.href;
-            let contactType = decodeURIComponent(currentUrl.split('/').pop().replace('-', ' '));
-            // find the index of the current contact type in the rules array
-            let currentIndex = rules.findIndex(rule => rule.contact_type.toLowerCase() === contactType);
-            // calculate the index of the previous page
-            let prevIndex = (currentIndex - 1 + rules.length) % rules.length;
-            let prevContactType = rules[prevIndex].contact_type.toLowerCase();
-            let prevUrl;
-            console.log(contactType);
-
-            if (prevIndex === rules.length - 1) {
-                prevUrl = '/rules';
-            }
-            else {
-                prevUrl = '/rules/' + prevContactType.replace(/ /g, '-');
-            }
-            // redirect to the previous page
-            window.location.href = prevUrl;
-        });
-
+    document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('next-page').addEventListener('click', function(event) {
             event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const nextIndex = (currentIndex + 1);
 
-            let currentUrl = window.location.href;
-            let contactType = decodeURIComponent(currentUrl.split('/').pop().replace(/-/g, ' '));
-            // find the index of the current contact type in the rules array
-            let currentIndex = rules.findIndex(rule => rule.contact_type.toLowerCase() === contactType);
-            // calculate the index of the next page
-            let nextIndex = (currentIndex + 1) % rules.length;
-            let nextContactType = rules[nextIndex].contact_type.toLowerCase();
-            let nextUrl;
-            console.log(nextContactType);
-            if (nextIndex === 0) {
-                nextUrl = '/identifying-fouls';
+            
+            console.log(nextIndex)
+            if (nextIndex < rules.length) {
+                const nextRuleType = rules[nextIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + nextRuleType;
             } else {
-                nextUrl = '/rules/' + nextContactType.replace(/ /g, '-');
-                console.log(nextUrl);
+                window.location.href = "/identifying-fouls";
             }
-            // redirect to the next page
-            window.location.href = nextUrl;
         });
-});
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const prevIndex = (currentIndex - 1);
+
+            
+            console.log(prevIndex)
+            if (prevIndex >= 0) {
+                const prevRuleType = rules[prevIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + prevRuleType;
+            } else {
+                window.location.href = "/rules";
+            }
+        });
+    });
+
+
 </script>
 <style>
     .custom-card {
-        border: 1px solid black;
-        border-radius: 10px;
         font-size: 24px;
+        background-color: #28511c;
+        padding: 0px 30px 10px 30px;
+    }
+    .card {
+        border: none;
     }
     video {
         width: 100%;
@@ -107,59 +144,250 @@
     #prev-page {
         left: 20px;
     }
-
     #next-page {
         right: 20px;
     }
+    html {
+        scroll-behavior: smooth;
+    }
+    #section1 {
+        background-color: #28511c;
+        height: 100vh;
+    }
+    #section2 {
+        padding-top: 130px; /* Adjust this value to match the height of your navbar */
+        height: 100vh;
+        background-color: #F5F5DC;
+        color: #28511c;
+    }
+    .rectangular-box {
+        border: 1px solid black;
+        margin-bottom: 20px;
+        color: #28511c;
+        background-color: #F5F5DC;
+        height: 100%;
+        border: 2px solid #121212;
+        box-shadow: 10px 10px #000;
+        padding: 20px 40px 20px 40px; 
+    }
+    .rectangular-box h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    body {
+        color:#F5F5DC;
+        background-color:#F5F5DC;
+    }
+    li {
+        font-family: 'Titillium Web';
+        font-weight: 300;
+        display: flex;
+        margin-bottom: 10px;
+    }
+    li::before {
+        content: "";
+        display: inline-block;
+        background-image: url('/static/friz_bw.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 20px;
+        height: 20px;
+        margin-left: -40px;
+        padding-right: 30px;
+    }
+    .custom-card-2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        border: solid 1px black;
+        font-size: 24px;
+        background-color: #28511c;
+        display: flex;
+        box-shadow: 10px 10px #000;
+    }
+    .card-label {
+        background-color: #F5F5DC; /* Change to the desired background color */
+        color: #28511c; /* Change to the desired text color */
+        padding: 15px 15px; /* Adjust padding as needed */
+        display: flex; /* Make the label a block-level element */
+        width: 100%; /* Make the label span the entire width of the card */
+        box-sizing: border-box; /* Include padding and border in the width */
+        font-weight: 300;
+        margin: 0px;
+    }
 
+.option {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*margin-bottom: 10px;
+    margin-top: 10px;*/
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Align text horizontally */
+    align-items: center; /* Align text vertically */
+    height: 25%;
+    margin: 0px;
+    border-top: 1px solid #28511c;
+}
+
+
+.selected-video::before {
+    content: "";
+    position: absolute;
+    top: 13%; /* Adjust as needed */
+    left: 0px; /* Adjust to half of the arrow width */
+    transform: translateY(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent transparent #28511c; /* Right-facing triangle */
+}
+
+.selected-frame-by-frame::before {
+    content: "";
+    position: absolute;
+    top: 38%; /* Adjust as needed */
+    left: 0px; /* Adjust to half of the arrow width */
+    transform: translateY(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent transparent #28511c; /* Right-facing triangle */
+}
+
+.selected-description::before {
+    content: "";
+    position: absolute;
+    top: 63%; /* Adjust as needed */
+    left: 0px; /* Adjust to half of the arrow width */
+    transform: translateY(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent transparent #28511c; /* Right-facing triangle */
+}
+
+.selected-next-example::before {
+    content: "";
+    position: absolute;
+    top: 88%; /* Adjust as needed */
+    left: 0px; /* Adjust to half of the arrow width */
+    transform: translateY(-50%);
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent transparent #28511c; /* Right-facing triangle */
+}
+
+
+.option:hover {
+    background-color: #f0f0f0;
+}
+.card-2-body {
+    flex: 0 0 auto;
+    padding: 0px;
+}
+.side-container {
+    height: 100%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F5DC;
+}
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #28511c;
+}
+.video-container {
+    max-width: 100%; max-height: 100%; height: 400px; display: flex; align-items: center;
+}
 </style>
-<h1 style="padding: 20px; font-size: 40px;">rules of contact </h1>
-<div class="container-fluid">
+<div class="container-fluid" id="section1">
+    <h1 style="padding: 20px 30px 10px 34px; font-size: 40px; font-weight: 300;">rules of contact: {{ rule.contact_type }} </h1>
     <div class="row justify-content-center">
-        <div class="col-lg-12"> 
-            <div class="card custom-card">
-                <div class="card-body" style="font-size: 20px;">
-                    <h2 style="padding: 15px; font-size: 35px;">{{ rule.contact_type }}</h2>
-                    {% for sentence in rule.relevant_info %}
-                        <p style="padding-left: 30px;">{{ sentence }}</p>
-                    {% endfor %}
+        <div class="card custom-card">
+            <div class="card-body" style="font-size: 20px;">
+                <div class="row">
+                    <div class="col-lg-4" style="padding-left: 15px; padding-right: 15px;">
+                        <div class="rectangular-box">
+                            <!-- Content for definition -->
+                            <h3 style="margin-bottom: 20px;">definition</h3>
+                        <p style="font-family: 'Titillium Web'; font-weight: 300;">{{ rule.definition }}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4" style="padding-left: 15px; padding-right: 15px;">
+                        <div class="rectangular-box">
+                            <!-- Content for key points -->
+                            <h3 style="margin-bottom: 20px;">key points</h3>
+                            <ul>
+                                {% for sentence in rule.relevant_info %}
+                                    <li>{{ sentence }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4" style="padding-left: 15px; padding-right: 15px;">
+                        <div class="rectangular-box">
+                            <!-- Content for key terms -->
+                            <h3 style="margin-bottom: 20px;">key terms</h3>
+                            <ul>
+                                {% for sentence in rule.terms %}
+                                    <li>{{ sentence }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <a href="#section2" style='font-size:40px; color: black; padding: 30px;' onmouseover="this.style.color='#F5F5DC'" onmouseout="this.style.color='black'"class='fas'>&#xf103;</a>
+        
     </div>
-</div>
-<h1 style="padding: 25px; font-size: 40px; ">examples & descriptions </h1>
+    </div>
 <!-- Second row with video, images, and description -->
-<div class="container-fluid mt-4" style="margin-bottom: 125px;">
-    <div class="row justify-content-center" style="margin-bottom: 20px;">
-        <!-- Video column -->
-        <div class="col-lg-4">
-            <video controls>
-                <source src="{{ url_for('static', filename=rule.media[0][0]) }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <!-- First image column -->
-        <div class="col-lg-2">
-            <img src="{{ url_for('static', filename=rule.media[0][1][0]) }}" alt="{{ rule.contact_type }} frame 1" class="img-fluid img1">
-        </div>
-        <!-- Second image column -->
-        <div class="col-lg-2">
-            <img src="{{ url_for('static', filename=rule.media[0][1][1]) }}" alt="{{ rule.contact_type }} frame 2" class="img-fluid img2">
-        </div>
-        <!-- Description box column -->
-        <div class="col-lg-3 position-relative">
-            <div class="card custom-card" style="height: 100%;">
-                <div class="card-body ex-describe" style="font-size: 18px; font-weight: bold;">
-                    {{ rule.media[0][2] }}
+<div class="container-fluid mt-0" style="margin-top: 125px;" id="section2">
+    <h1 style="padding: 25px; font-size: 40px; font-weight: 300;">examples & descriptions: {{ rule.contact_type }} </h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card custom-card-2">
+                <h3 class="row card-label">
+                    example 1
+                </h3>
+                    <!-- Content goes here -->
+                    <div class="row d-flex align-items-center" style="height: 400px; margin: 0px; max-height: 100%; overflow:auto;">
+                        <div class="col-lg-9 text-center d-flex justify-content-center">
+                            <div class="video-container" id="video-container">
+                                <video controls id="video-player" style="width: 100%; height: 90%; max-width: 100%; max-height: 100%; border-radius: 10px;">
+                                    <source src="{{ url_for('static', filename=rule.media[0][0]) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        <div id="frames-container" style="display: none;">
+                            <!-- Display two frames side by side -->
+                            <div class="row justify-content-center" style="margin: 10px; position: relative; display: flex; vertical-align: center;"> 
+                            <div class="col-lg-6 col-md-6 col-sm-6 d-flex" style="justify-content: center; display: flex;">
+                                <img src="{{ url_for('static', filename=rule.media[0][1][0]) }}" alt="{{ rule.contact_type }} frame 1" class="img-fluid img1" style="border-radius: 10px; position: relative;">
+                            </div>
+                            <!-- Second image column -->
+                            <div class="col-lg-6 col-md-6 col-sm-6 d-flex" style="justify-content: center; display: flex;">
+                                <img src="{{ url_for('static', filename=rule.media[0][1][1]) }}" alt="{{ rule.contact_type }} frame 2" class="img-fluid img2" style="border-radius: 10px; position: relative;">
+                            </div>
+                            </div>                    
+                        </div>
+                        <div class="description-container" id="description-container" style="display: none; color: #F5F5DC; padding: 15px;">
+                            <!-- Display description -->
+                            <p> {{ rule.media[0][2] }}</p>
+                        </div>
+                    </div>
+                    <div class="side-container col-lg-3" style="padding: 0px; max-height: 100%;">
+                        <div class="option selected-video" onclick="showContent('video', this)">video</div>
+                        <div class="option" onclick="showContent('frame-by-frame', this)">frame-by-frame</div>
+                        <div class="option" onclick="showContent('description', this)">description</div>
+                        <div class="option" onclick="showContent('next-example', this)">next example</div>
+                    </div>
                 </div>
             </div>
-            <!-- Right arrow icon -->
-            <a href="#" id="next-example" style="position: absolute; top: 50%; right: -10%; transform: translateY(-50%); font-size: 32px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" style="fill: gray;" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                </svg>
-            </a>
         </div>
     </div>
 </div>

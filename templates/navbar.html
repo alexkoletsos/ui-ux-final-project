@@ -3,24 +3,21 @@
 
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
 <style>
-    .custom-row {
-        padding: 20px; /* Add padding to the rows */
-        cursor: pointer; /* Change cursor to pointer on hover */
-        display: flex; /* Use flexbox to align items */
-        justify-content: space-between; /* Align items with space between */
+    body {
+        color: #28511c;
+        background-color: #28511c;
     }
-    .custom-row .arrow-down {
-        margin-left: 10px; /* Add margin to separate arrow from text */
+    a {
+        text-decoration: none;
+        color: #28511c;
     }
-    .list-group-item {
-        margin-left: 30px; /* Add left margin to list items */
-        border: none; /* Remove border from list items */
-        font-size: 24px;
+    a:hover {
+        text-decoration: none;
     }
 </style>
-<div class="row">
+<div class="row" style="margin-top: 15px;">
     <div class="col">
-        <h2 class="custom-row" data-toggle="collapse" href="#contactRules" role="button" aria-expanded="false" aria-controls="contactRules">
+        <h2 class="navbar-row" data-toggle="collapse" href="#contactRules" role="button" aria-expanded="false" aria-controls="contactRules" style="font-weight: 400;">
             rules of contact
             <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
         </h2>
@@ -35,7 +32,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <h2 class="custom-row" data-toggle="collapse" href="#identifyFouls" role="button" aria-expanded="false" aria-controls="identifyFouls">
+        <h2 class="navbar-row" data-toggle="collapse" href="#identifyFouls" role="button" aria-expanded="false" aria-controls="identifyFouls" style="font-weight: 400;">
             identifying fouls
             <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
         </h2>
@@ -50,7 +47,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <h2 class="custom-row" data-toggle="collapse" href="#testKnowledge" role="button" aria-expanded="false" aria-controls="testKnowledge">
+        <h2 class="navbar-row" data-toggle="collapse" href="#testKnowledge" role="button" aria-expanded="false" aria-controls="testKnowledge" style="font-weight: 400;">
             test your knowledge
             <span class="arrow-down">&#x2304;</span> <!-- Carrot arrow -->
         </h2>
@@ -69,7 +66,7 @@
 <script>
     // Toggle carrot arrow direction and collapse behavior when row is clicked
     $(document).ready(function() {
-    $('.custom-row').click(function() {
+    $('.navbar-row').click(function() {
         console.log("Clicked"); // Debugging
         var arrowDown = $(this).find('.arrow-down');
         arrowDown.toggleClass('collapsed');
