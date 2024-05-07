@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+    body {
+        background-color: #28511c;
+        color: #F5F5DC;
+    }
+</style>
+
+<div class="content-container">
+<div class="end-zone">
+    <div class="row" style="justify-content: center; padding-top: 20px;">
+        <h2 style="font-weight: 400;">{{ section }}</h2>
+    </div>
+    <div class="row" style="justify-content: center; font-size: 16px; text-align: center; font-family: 'Titillium Web'; font-weight: 100;">
+        {% set words = description.split(' ') %}
+        {% for word in words %}
+            {% if word.endswith(('.', ',', '!', '?', ';')) %}
+            {{ word }}<br>
+        {% else %}
+            {{ word }}
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="button-container" style="margin-bottom: 100px;">
+        <img src="{{ url_for('static', filename='flying-person-2.png') }}" alt="flying person" class="flying-person">
+        <a href="{{ url_for('section_home', section=url) }}" id="start-lesson" class="lesson-button">start</a>
+    </div>
+    <div class="endzone"></div>
+</div>
+</div>
+{% endblock %}
