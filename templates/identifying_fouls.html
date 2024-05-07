@@ -44,6 +44,7 @@
         var framesContainer = document.getElementById("frames-container");
         var leftArrow = document.getElementById("prev-example");
         var rightArrow = document.getElementById("next-example");
+        var header = document.querySelector(".card-label");
         index = (index - 1) % foul.media.length;
         if (index === 0) {
             textContainer.style.display = "block";
@@ -174,18 +175,21 @@
                                 </video>
                             </div>
                             <div id="frames-container" style="display: none;">
-                                <!-- Display two frames side by side -->
+                                <div class="row" style="margin-bottom: 10px; color: #28511c; font-family: 'Titillium Web';">
+                                    <p>click on each image for a detailed play-by-play!</p>
+                                </div>
+                                <!-- Display 3 frames side by side -->
                                 <div class="row justify-content-center" style="margin: 10px; position: relative; display: flex; vertical-align: center;">
                                     <div class="col-lg-4 col-md-4 col-sm-4 d-flex" style="justify-content: center; display: flex;">
-                                        <img src="{{ url_for('static', filename=foul.media[1][0]) }}" alt="{{ foul.foul_type }} frame 1" class="img-fluid img1" style="position: relative;" onclick="replaceImage(this, 0)">
+                                        <img src="{{ url_for('static', filename=foul.media[1][0]) }}" alt="{{ foul.foul_type }} frame 1" class="img-fluid img1" style="position: relative; cursor: pointer;" onclick="replaceImage(this, 0)">
                                     </div>
                                     <!-- Second image column -->
                                     <div class="col-lg-4 col-md-4 col-sm-4 d-flex" style="justify-content: center; display: flex;">
-                                        <img src="{{ url_for('static', filename=foul.media[1][1]) }}" alt="{{ foul.foul_type }} frame 2" class="img-fluid img2" style="position: relative;" onclick="replaceImage(this, 1)">
+                                        <img src="{{ url_for('static', filename=foul.media[1][1]) }}" alt="{{ foul.foul_type }} frame 2" class="img-fluid img2" style="position: relative; cursor: pointer;" onclick="replaceImage(this, 1)">
                                     </div>
                                     <!-- Third image column -->
                                     <div class="col-lg-4 col-md-4 col-sm-4 d-flex" style="justify-content: center; display: flex;">
-                                        <img src="{{ url_for('static', filename=foul.media[1][1]) }}" alt="{{ foul.foul_type }} frame 3" class="img-fluid img3" style="position: relative;" onclick="replaceImage(this, 2)">
+                                        <img src="{{ url_for('static', filename=foul.media[1][1]) }}" alt="{{ foul.foul_type }} frame 3" class="img-fluid img3" style="position: relative; cursor: pointer;" onclick="replaceImage(this, 2)">
                                     </div>
                                 </div>                    
                             </div>
