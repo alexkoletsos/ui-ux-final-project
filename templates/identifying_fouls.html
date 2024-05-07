@@ -75,6 +75,40 @@
         image.src = "{{ url_for('static', filename='') }}" + fn;;
         console.log(image)
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('next-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            console.log("poop");
+            const currentFoulId = foul.id;
+            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
+            const nextIndex = (currentIndex + 1);
+
+            
+            console.log(nextIndex)
+            console.log()
+            if (nextIndex < fouls.length) {
+                const nextFoulType = fouls[nextIndex].foul_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/identifying-fouls/" + nextFoulType;
+            } else {
+                window.location.href = "/quiz";
+            }
+        });
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentFoulId = foul.id;
+            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
+            const prevIndex = (currentIndex - 1);
+
+            
+            console.log(prevIndex)
+            if (prevIndex >= 0) {
+                const prevFoulType = fouls[prevIndex].foul_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/identifying-fouls/" + prevFoulType;
+            } else {
+                window.location.href = "/identifying-fouls";
+            }
+        });
+    });
 </script>
 <style>
     .custom-card {
