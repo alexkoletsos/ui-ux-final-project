@@ -56,8 +56,10 @@
     }
 
     function showNextExample() {
+        var header = document.querySelector(".card-label");
         currentRuleIndex = (currentRuleIndex + 1) % rule.media.length;
         console.log(currentRuleIndex);
+        header.textContent = "example " +  (currentRuleIndex + 1);
         document.querySelector('video source').src = '/static/' + rule.media[currentRuleIndex][0];
         document.querySelector('.img1').src = '/static/' + rule.media[currentRuleIndex][1][0];
         document.querySelector('.img2').src = '/static/' + rule.media[currentRuleIndex][1][1];
@@ -363,7 +365,7 @@
                             </div>
                         <div id="frames-container" style="display: none;">
                             <!-- Display two frames side by side -->
-                            <div class="row justify-content-center" style="margin: 10px; position: relative; display: flex; vertical-align: center;">
+                            <div class="row justify-content-center" style="margin: 10px; position: relative; display: flex; vertical-align: center;"> 
                             <div class="col-lg-6 col-md-6 col-sm-6 d-flex" style="justify-content: center; display: flex;">
                                 <img src="{{ url_for('static', filename=rule.media[0][1][0]) }}" alt="{{ rule.contact_type }} frame 1" class="img-fluid img1" style="border-radius: 10px; position: relative;">
                             </div>
