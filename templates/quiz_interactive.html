@@ -4,39 +4,6 @@
 <script>
     let question = {{ question | tojson }}
 </script>
-<script>
-
-
-    $(document).ready(function() {
-
-        console.log("test");
-
-        $(".draggable-response").draggable({
-            revert: "invalid", // Snap back to original position if not dropped on a droppable target
-            zIndex: 1000, // Set a high z-index to ensure draggable element is on top
-        });
-
-        $("#b").droppable({
-
-            over: function(event, ui) {
-                console.log("over");
-                $( this ).addClass( "allow-drop" );
-            },
-
-            out: function(event, ui) {
-                console.log("out");
-                $( this ).removeClass( "allow-drop" );
-            },
-
-            drop: function( event, ui ) {
-                console.log("drop");
-                $( this ).removeClass( "allow-drop" );
-            }
-
-        });
-
-    });
-</script>
 <style>
     .custom-card {
         border: 1px solid black;
@@ -49,48 +16,30 @@
         /*object-fit: cover; /* Ensure media fills the container */
         
     }
-    .allow-drop {
-        position: relative;
-        display: inline-block;
-    }
-
-    .allow-drop img {
-        display: block;
-    }
-
-    .allow-drop::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity here */
-    }
-    .button-container {
+    .lesson-button-container {
         position: relative;
     }
+
     .lesson-button {
-        top: 20px;
+        /* position: absolute; */
+        /* bottom: 20px; Adjust as needed */
         font-size: 18px;
         padding: 10px;
         border: 1px solid gray;
-        border-radius: 15px;
+        border-radius: 5px;
         background-color: rgb(57, 113, 224);
         text-decoration: none;
         color: rgb(254, 254, 152);
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
     }
-    #start-lesson {
-        left: 20px;
-    }
-    #submit-quiz:hover {
-        color: rgb(254, 254, 152);
-        background-color: rgb(37, 96, 214);
+
+    .button-container {
+        padding: 10px 20px 10px 20px;
+        display: flex;
+        justify-content: space-between;
     }
 </style>
 <h2 style="padding: 20px;">test your frisbee knowledge!</h2>
-<div class="container-fluid">
+<div class="container-fluid" style="padding-left: 20px;">
     <div class="row">
         <div class="col-lg-12">
             <h4 style="padding: 15px;">{{ question.question }}</h4>
@@ -116,8 +65,9 @@
             </div>
         </div>
     {% endfor %}
-    <div class="button-container" style="padding-top: 20px; margin-bottom: 100px; text-align: right;">
-        <a href="#" id="submit-quiz" class="lesson-button">submit</a>
-    </div>
+</div>
+<div class="button-container"> 
+    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="submit-quiz" class="lesson-button">submit</a>
 </div>
 {% endblock %}
