@@ -3,6 +3,27 @@
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
 <script>
     let question = {{ question | tojson }}
+    let quiz = {{ quiz | tojson }}
+    let progbar = {{ progbar | tojson }}
+    let answer = {{ answer | tojson }}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentQId = question.id;
+            const prevIndex = (currentQId - 1);
+
+            console.log(prevIndex);
+
+            
+            console.log(prevIndex)
+            if (prevIndex > 0) {
+                window.location.href = "/quiz/" + prevIndex;
+            } else {
+                window.location.href = "/quiz";
+            }
+        });
+    });
 </script>
 <style>
     .custom-card {
@@ -22,13 +43,16 @@
         /*object-fit: cover; /* Ensure media fills the container */
         
     }
+    
+
     .lesson-button-container {
+        padding-top: 20px;
         position: relative;
     }
 
     .lesson-button {
-        /* position: absolute; */
-        /* bottom: 20px; Adjust as needed */
+        position: absolute;
+        bottom: 20px; /* Adjust as needed */
         font-size: 18px;
         padding: 10px;
         border: 1px solid gray;
@@ -38,16 +62,39 @@
         color: rgb(254, 254, 152);
     }
 
-    .button-container {
-        padding: 10px 20px 10px 20px;
-        display: flex;
-        justify-content: space-between;
+    a:hover {
+        text-decoration: none; 
+        color: inherit; 
+    }
+
+    #prev-page {
+        left: 20px;
+    }
+
+    #submit-quiz {
+        right: 20px;
     }
     body {
         background-color: #28511c;
-        font-family: 'Titillium Web';
-        font-weight: 400;
+        font-weight: 300;
+        font-family: 'Kanit', sans-serif; 
+    }
+    .main {
+        height: 100vh;
         color: #F5F5DC;
+    }
+    li {
+        font-family: 'Titillium Web';
+        font-weight: 300;
+        display: flex;
+        margin-bottom: 10px;
+    }
+    li::before {
+        content: "\2192";
+        display: inline-block;
+        height: 20px;
+        margin-left: -40px;
+        padding-right: 30px;
     }
 </style>
 <h2 style="padding: 20px; font-family: 'Kanit', sans-serif; font-weight: 300;">test your frisbee knowledge!</h2>
@@ -78,7 +125,7 @@
         </div>
     {% endfor %}
 </div>
-<div class="button-container"> 
+<div class="lesson-button-container">
     <a href="#" id="prev-page" class="lesson-button">back</a>
     <a href="#" id="submit-quiz" class="lesson-button">submit</a>
 </div>

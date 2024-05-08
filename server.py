@@ -52,7 +52,7 @@ fouls = [
      "media": ['defensive.mp4', ['defensive-1.jpg', 'defensive-2.jpg', 'defensive-3.jpg'], ['defensive-w-1.jpg', 'defensive-w-2.jpg', 'defensive-w-3.jpg']]},
     {
      "id": 3,
-     "foul_type": "dangerous-plays",
+     "foul_type": "dangerous plays",
      "relevant_info": ["it is the responsibility of all players to avoid contact in any way possible.", "violent impact with legitimately positioned opponents constitutes harmful endangerment, a foul, and must be strictly avoided."],
      "media": ['dangerous-play.mp4', ['dangerous-1.jpg', 'dangerous-2.jpg', 'dangerous-3.jpg'], ['dangerous-w-1.jpg', 'dangerous-w-2.jpg', 'dangerous-w-3.jpg']]} 
     ]
@@ -141,12 +141,49 @@ progress = {
 
 @app.route('/')
 def home():
+    rules_progress = 0
+    for quantity in progress.values():
+        rules_progress += quantity
+    
+    sec = 'rules'
+    if progress["fouls-pb"]!=0:
+        sec = 'identifying-fouls'
+    if progress["quiz-pb"]!=0:
+        sec = 'quiz'
+    
+    if sec == 'rules':
+        pg_idx = progress['rules-pb']
+        pg = ""
+        for rule in rules:
+            if rule['id'] == pg_idx:
+                pg = rule["contact_type"].replace(" ", "-")
+    if sec == 'identifying-fouls':
+        pg_idx = progress['fouls-pb']
+        pg = ""
+        for foul in fouls:
+            if foul['id'] == pg_idx:
+                pg = foul["foul_type"].replace(" ", "-")
+    if sec == 'quiz':
+        pg_idx = progress['quiz-pb']
+        pg = ""
+        for q in quiz:
+            if q['id'] == pg_idx:
+                pg = str(pg_idx)
+    
+
+    progbar = {'section': sec, 'page': pg, 'id': rules_progress}
+
     is_home_page = True
-    return render_template('home.html', is_home_page = is_home_page) 
+    return render_template('home.html', is_home_page = is_home_page, progbar=progbar) 
 
 @app.route('/navbar')
 def navbar():
-    return render_template('navbar.html')
+    rules_progress = 0
+    for quantity in progress.values():
+        rules_progress += quantity
+    progbar = {'id': rules_progress}
+
+    return render_template('navbar.html', progbar=progbar)
 
 @app.route('/rules/<string:contact_type>')
 def contact_rules(contact_type):
@@ -156,7 +193,9 @@ def contact_rules(contact_type):
         if rule["contact_type"] == contact_type:
             item = rule
             break
-    return render_template('rules_of_contact.html', rule=item, rules=rules)
+    rules_progress = progress["rules-pb"] 
+    progbar = {'id': rules_progress}
+    return render_template('rules_of_contact.html', rule=item, rules=rules, progbar=progbar)
 
 @app.route('/identifying-fouls/<string:foul_type>')
 def identifying_fouls(foul_type):
@@ -166,10 +205,16 @@ def identifying_fouls(foul_type):
         if foul["foul_type"] == foul_type:
             item = foul
             break
-    return render_template('identifying_fouls.html', foul=item, fouls=fouls)
+    rules_progress = progress["fouls-pb"] + 3
+    progbar = {'id': rules_progress}
+    return render_template('identifying_fouls.html', foul=item, fouls=fouls, progbar=progbar)
 
 @app.route('/<string:section>')
 def section_home(section):
+    rules_progress = 0
+    for quantity in progress.values():
+        rules_progress += quantity
+    progbar = {'id': rules_progress}
     description = ''
     url = ''
     if section == 'rules':
@@ -184,11 +229,16 @@ def section_home(section):
         section = 'part 3: test your knowledge'
         description = "you've completed the lesson! find out if you're a frisbee expert."
         url = 'quiz/1'
-    return render_template('section_home.html', section=section, description=description, url=url)
+    return render_template('section_home.html', section=section, description=description, url=url, progbar=progbar)
 
 
 @app.route('/quiz/<string:id>')
 def quiz_question(id):
+
+    rules_progress = 0
+    for quantity in progress.values():
+        rules_progress += quantity
+    progbar = {'id': rules_progress}
 
     id = int(id)
     item = None
@@ -198,10 +248,17 @@ def quiz_question(id):
             item = question
             question_type = question["type"]
             break
+
+    answer = None
+    for ans in quiz_ans:
+        if ans["id"] == id:
+            answer = ans["answer"]
+
+
     if question_type == "multiple choice":
-        return render_template('quiz_mc.html', question=item)
+        return render_template('quiz_mc.html', question=item, quiz=quiz, progbar=progbar, answer=answer)
     else:
-        return render_template('quiz_interactive.html', question=item)
+        return render_template('quiz_interactive.html', question=item, quiz=quiz, progbar=progbar, answer=answer)
     
 @app.route('/quiz_results')
 def display_results():
@@ -211,6 +268,11 @@ def display_results():
     global quiz
 
     result = {}
+
+    rules_progress = 0
+    for quantity in progress.values():
+        rules_progress += quantity
+    progbar = {'id': rules_progress}
 
     for question, answer in zip(quiz, quiz_ans):
         question_id = question["id"]
@@ -226,7 +288,7 @@ def display_results():
         if item:
             correct_num += 1
 
-    return render_template('quiz_results.html', result=result, correct_num=correct_num)
+    return render_template('quiz_results.html', result=result, correct_num=correct_num, progbar=progbar)
     
 @app.route('/store_response', methods=['POST'])
 def store_response():
@@ -272,6 +334,8 @@ def update_progress():
     section = data['section_id']
     id = data['id']
 
+    print(id)
+
     curr_section = progress[section]
 
     if id > curr_section:
@@ -279,6 +343,16 @@ def update_progress():
         return jsonify({'id': id})
     else:
         return jsonify({'id': curr_section})
+    
+@app.route('/restart_quiz', methods=['POST'])
+def restart_quiz():
+
+    for item in quiz_ans:
+        item["answer"] = None
+
+    progress["quiz-pb"] = 0
+    
+    return jsonify({'message': 'Quiz restarted successfully'})
 
 if __name__ == '__main__':
    app.run(debug=True)

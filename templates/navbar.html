@@ -3,6 +3,23 @@
 {% block content %}
 
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let progbar = {{ progbar | tojson }}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(id) {
+        if (id !== 0) {
+            var percentage = (id / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    }
+</script>
 <style>
     body {
         color: #28511c;

@@ -4,6 +4,7 @@
 <script>
     let rule = {{ rule | tojson }}
     let rules = {{ rules | tojson }}
+    let progbar = {{ progbar | tojson }}
     let currentRuleIndex = 0;
 
     function showContent(contentType, element) {
@@ -68,37 +69,37 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('next-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            const currentRuleId = rule.id;
-            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
-            const nextIndex = (currentIndex + 1);
+        document.getElementById('next-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const nextIndex = (currentIndex + 1);
 
-            
-            console.log(nextIndex)
-            if (nextIndex < rules.length) {
-                const nextRuleType = rules[nextIndex].contact_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/rules/" + nextRuleType;
-            } else {
-                window.location.href = "/identifying-fouls";
-            }
-        });
-        document.getElementById('prev-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            const currentRuleId = rule.id;
-            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
-            const prevIndex = (currentIndex - 1);
+            console.log(nextIndex)
+            if (nextIndex < rules.length) {
+                const nextRuleType = rules[nextIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + nextRuleType;
+                updateProgress();
+            } else {
+                window.location.href = "/identifying-fouls";
+                updateProgress();
+            }
+        });
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const prevIndex = (currentIndex - 1);
 
-            
-            console.log(prevIndex)
-            if (prevIndex >= 0) {
-                const prevRuleType = rules[prevIndex].contact_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/rules/" + prevRuleType;
-            } else {
-                window.location.href = "/rules";
-            }
-        });
-    });
+            console.log(prevIndex)
+            if (prevIndex >= 0) {
+                const prevRuleType = rules[prevIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + prevRuleType;
+            } else {
+                window.location.href = "/rules";
+            }
+        });
+    });
 
     function updateProgress() {
 
@@ -127,9 +128,18 @@
         }); 
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
     function updateProgressBar(ruleId) {
-        var percentage = (ruleId / 11) * 100;
-        $('#rules-pb').css('width', percentage + '%');
+        if (ruleId !== 0) {
+            var percentage = (ruleId / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
     } 
 
 
@@ -430,6 +440,6 @@
 </div>
 <div class="lesson-button-container">
     <a href="#" id="prev-page" class="lesson-button">back</a>
-    <a href="#" id="next-page" class="lesson-button" onclick="updateProgress()">next</a>
+    <a href="#" id="next-page" class="lesson-button">next</a>
 </div>
 {% endblock %}
