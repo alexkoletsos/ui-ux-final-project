@@ -375,8 +375,8 @@
                             <!-- Content for key terms -->
                             <h3 style="margin-bottom: 20px;">key terms</h3>
                             <ul>
-                                {% for sentence in rule.terms %}
-                                    <li>{{ sentence }}</li>
+                                {% for term, definition in rule.terms.items() %}
+                                    <li>{{ term }}: {{ definition }}</li>
                                 {% endfor %}
                             </ul>
                         </div>

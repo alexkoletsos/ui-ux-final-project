@@ -24,6 +24,20 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(id) {
+        if (id !== 0) {
+            var percentage = (id / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    } 
 </script>
 <style>
     .custom-card {
@@ -95,6 +109,13 @@
         height: 20px;
         margin-left: -40px;
         padding-right: 30px;
+    }
+    body {
+        background-color: #F5F5DC;
+        background-color: #28511c;
+        font-family: 'Titillium Web';
+        font-weight: 400;
+        color: #F5F5DC;
     }
 </style>
 <h2 style="padding: 20px; font-family: 'Kanit', sans-serif; font-weight: 300;">test your frisbee knowledge!</h2>

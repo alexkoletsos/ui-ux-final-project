@@ -10,31 +10,31 @@ rules = [
      "contact_type": "contact while throwing",
      "definition": "non-minor contact between the thrower and the marker is considered a foul on the defender; examples include contact with the thrower’s hand during the throwing motion.",
      "terms": {
-        "thrower": "the player who possesses the disc and intends to pass it to a teammate by throwing it.",
+        "thrower": "the player who has the disc and plans to pass it to a teammate.",
         "marker": "the defender who is guarding the thrower, attempting to prevent them from making a successful throw.",
-        "stall count": "the count, usually from 1 to 10, indicating the maximum time a thrower has to release the disc after the marker has initiated the stall count."
+        "stall count": "the count, from 1 to 10, 10 seconds being the maximum time a thrower has to release the disc after the marker started the stall count."
      },
-     "relevant_info": ["contact occurring during the follow through (after the disc has been released) is not a foul.", "if the foul is called after the throw goes off and the pass is not completed, the disc returns to the thrower.", "when a foul is committed by the marker, the stall count goes down to 0."],
+     "relevant_info": ["contact occurring after the disc has been released is not a foul.", "if the foul is called after the throw goes off and the pass is not completed, the disc returns to the thrower.", "when a foul is committed by the marker, the stall count goes down to 0."],
      "media": [['contact-throwing-1.mp4', ['contact-throwing-1-pic-1.jpg', 'contact-throwing-1-pic-2.jpg'], "in this example, the marker smacks the disc out of the thrower's hand before the disc is released. this interferes with the throw and does not constitute as legal defense. after this call, the disc goes back to the thrower."], ['contact-throwing-2.mp4', ['contact-throwing-2-pic-1.jpg', 'contact-throwing-2-pic-2.jpg'], "in this example, the marker contacts the thrower's hand at the disc's point of release. as seen in the video, the disc is able to go off but the contact initiated by the marker with the thrower's hand before the disc is released constitutes as non-minor contact. after this call, the disc goes back to the thrower."]]},
     {
      "id": 2,
      "contact_type": "contact while catching",
-     "definition": "non-minor contact between opposing players while, or directly after, either player makes a play on the disc; examples include contact with an opponent’s extended arms or hands that are about to, or already are, contacting the disc.",
+     "definition": "non-minor contact between opposing players while, or right after, either player makes a play on the disc; such as contact with an opponent’s extended arms or hands that are about to, or already are, contacting the disc.",
      "terms": {
                 "play on the disc": "any action related to attempting to catch, intercept, or defend the disc during play.",
                 "legitimately positioned": "being in a legal and fair position on the field in accordance with the rules.",
                 "contested": "refers to a situation where there is disagreement between players regarding a call or ruling.",
                 "uncontested": "refers to a situation where there is agreement between players regarding a call or ruling."
      },
-     "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "if a catching foul occurs and is uncontested, the player fouled gains possession at the point of the infraction. If the call is contested, the disc goes back to the thrower."],
+     "relevant_info": ["if a player contacts an opponent before the disc arrives and interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "if a catching foul occurs and is uncontested, the player fouled gains possession at the point of the infraction. If the call is contested, the disc goes back to the thrower."],
      "media": [['contact-catching-1.mp4', ['contact-catching-1-pic-1.jpg', 'contact-catching-1-pic-2.jpg'], 'an example of a contested foul. from the frame-by-frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower where the foul was initially called.'], ['contact-catching-2.mp4', ['contact-catching-2-pic-1.jpg', 'contact-catching-2-pic-2.jpg'], "an example of a defensive foul. the defender chases after the offender and attempts to slap down the disc before it is caught, but instead slaps her left hand with the disc. if uncontested, the play would resume where the disc would've been caught. if uncontested, the disc would go back to the player who initially threw the disc."]]},
     {
      "id": 3,
      "contact_type": "contact away from the disc",
      "definition": "it is the responsibility of all players to avoid contact in any way possible. violent impact with legitimately positioned opponents constitutes harmful endangerment, a foul, and must be strictly avoided.",
      "terms": {
-        "violent impact": "Forceful contact between players that poses a risk of injury or harm.",
-        "harmful endangerment": "Actions or behaviors that put players at risk of injury or harm, including violent impacts."
+        "violent impact": "forceful contact between players that poses a risk of injury or harm.",
+        "harmful endangerment": "actions or behaviors that put players at risk of injury or harm, including violent impacts."
      },
      "relevant_info": ["if the foul is accepted, the fouled player may make up any positional disadvantage caused by the foul."],
      "media": [['contact-away-1.mp4', ['contact-away-1-pic-1.jpg', 'contact-away-1-pic-2.jpg'], 'both the offender and the defender are running in the same direction, and both are away from the disc. however, when the offender changes direction, this causes the defender to run into them and topple to the ground. since this foul did not affect the play, the disc remains with the player who has it in their possession, but the defender is allowed to get back up and catch up with the person they are defending before the play resumes.'], ['contact-away-2.mp4', ['contact-away-2-pic-1.jpg', 'contact-away-2-pic-2.jpg'], "this is a failed box-out which occurred away from the disc. although the defender is ahead of the offender, the defender shoves the offender with their right arm, and thus initiates non-minor contact with the offender, interfering with the offender's ability to run into their space."]]}
