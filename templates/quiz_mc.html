@@ -18,6 +18,34 @@
     .arrow{
         padding-top: 40px;
     }
+    .lesson-button-container {
+        position: relative;
+    }
+
+    .lesson-button {
+        position: absolute;
+        bottom: 20px; /* Adjust as needed */
+        font-size: 18px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 5px;
+        background-color: rgb(57, 113, 224);
+        text-decoration: none;
+        color: rgb(254, 254, 152);
+    }
+
+    a:hover {
+        text-decoration: none; 
+        color: inherit; 
+    }
+
+    #prev-page {
+        left: 20px;
+    }
+
+    #next-question {
+        right: 20px;
+    }
 </style>
 <h2 style="padding: 20px;">test your frisbee knowledge!</h2>
 <div class="container-fluid">
@@ -72,16 +100,18 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row arrow">
-        <div class="col-lg-12">
-            <a href="#" id="next-question" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-size: 32px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="black" class="arrow-right" viewBox="0 0 16 16">
-                    <path d="M8.354 4.354a.5.5 0 0 1 0 .707L11.207 8l-2.853 2.854a.5.5 0 0 1-.708-.708l3-3a.5.5 0 0 1 0 .707l-3-3a.5.5 0 0 1-.708.708L11.207 8l-2.853-2.854a.5.5 0 0 1 .708-.708z"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-    
+    </div>  
 </div>
+<div class="container-fluid" style="padding-top: 50px;">
+    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="next-question" class="lesson-button">next</a>
+</div>
+<script>
+    const currentPageUrl = window.location.href;
+
+    if (currentPageUrl.includes('/quiz/1')) {
+        console.log("poo");
+        document.getElementById('prev-page').style.display = 'none';
+    }
+</script>
 {% endblock %}
