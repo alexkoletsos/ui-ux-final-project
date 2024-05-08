@@ -99,6 +99,20 @@
         });
     });
 
+    function updateProgress(currentPage) {
+        $.ajax({
+            type: 'POST',
+            url: '/update_progress',
+            data: { current_page: currentPage },
+            success: function(response) {
+                console.log('Progress updated successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating progress:', error);
+            }
+    });
+}
+
 
 </script>
 <style>
@@ -392,7 +406,7 @@
     </div>
 </div>
 <div class="lesson-button-container">
-    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="prev-page" class="lesson-button" onclick="updateProgress(currentPage)">back</a>
     <a href="#" id="next-page" class="lesson-button">next</a>
 </div>
 {% endblock %}

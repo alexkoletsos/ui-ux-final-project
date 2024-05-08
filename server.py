@@ -11,7 +11,7 @@ rules = [
      "definition": "non-minor contact between the thrower and the marker is considered a foul on the defender; examples include contact with the thrower’s hand during the throwing motion.",
      "terms": ['thrower', 'marker', 'stall count'],
      "relevant_info": ["contact occurring during the follow through (after the disc has been released) is not a foul.", "if the foul is called after the throw goes off and the pass is not completed, the disc returns to the thrower.", "when a foul is committed by the marker, the stall count goes down to 0."],
-     "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by-frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]},
+     "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by-frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['contact-throwing-1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]},
     {
      "id": 2,
      "contact_type": "contact while catching",
@@ -28,12 +28,24 @@ rules = [
      "media": [['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'an example of a contested foul. from the frame-by- frame, we can see that the defender contacts the disc before the offender does; however, the offender claimed to stop rotation of the disc before the defender got to it, thus calling a foul. it was contested, so the disc goes back to the thrower.'], ['catching_1.mp4', ['catching_pic_1.jpg', 'catching_pic_2.jpg'], 'hi hi hi.']]}
     ]
 fouls = [
-    {"foul_type": "offensive",
-     "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul."],
-     "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]},
-    {"foul_type": "defensive",
-     "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "non-minor contact between the thrower and the marker is considered a foul."],
-     "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]} 
+    {
+        "id": 1,
+        "foul_type": "offensive",
+        "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul."],
+        "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]
+    },
+    {
+        "id": 2,
+        "foul_type": "defensive",
+        "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "non-minor contact between the thrower and the marker is considered a foul."],
+        "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]
+    },
+    {
+        "id":3, 
+        "foul_type": "dangerous play",
+        "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "non-minor contact between the thrower and the marker is considered a foul."],
+        "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]
+    } 
     ]
 
 
@@ -110,6 +122,12 @@ quiz_ans = [
 
 ]
 
+progress = {
+    "rules-pb": 0,
+    "fouls-pb": 0,
+    "quiz-pb":0
+}
+
 # ROUTES 
 
 @app.route('/')
@@ -133,6 +151,7 @@ def contact_rules(contact_type):
 
 @app.route('/identifying-fouls/<string:foul_type>')
 def identifying_fouls(foul_type):
+    foul_type = foul_type.replace("-", " ")
     item = None
     for foul in fouls:
         if foul["foul_type"] == foul_type:
@@ -233,6 +252,16 @@ def submit_quiz():
             break
     
     return jsonify(quiz_ans = quiz_ans)
+
+@app.route('/update_progress', methods=['POST'])
+def update_progress():
+    furthest_page_reached = session.get('furthest_page_reached', 0)
+    current_page = int(request.form['current_page'])
+
+    if current_page > furthest_page_reached:
+        session['furthest_page_reached'] = current_page
+
+    return 'Success'
 
 if __name__ == '__main__':
    app.run(debug=True)
