@@ -57,6 +57,7 @@ fouls = [
      "media": ['dangerous-play.mp4', ['dangerous-1.jpg', 'dangerous-2.jpg', 'dangerous-3.jpg'], ['dangerous-w-1.jpg', 'dangerous-w-2.jpg', 'dangerous-w-3.jpg']]} 
     ]
 
+
 quiz = [
     {
         "id": 1,
@@ -130,6 +131,12 @@ quiz_ans = [
 
 ]
 
+progress = {
+    "rules-pb": 0,
+    "fouls-pb": 0,
+    "quiz-pb":0
+}
+
 # ROUTES 
 
 @app.route('/')
@@ -153,6 +160,7 @@ def contact_rules(contact_type):
 
 @app.route('/identifying-fouls/<string:foul_type>')
 def identifying_fouls(foul_type):
+    foul_type = foul_type.replace("-", " ")
     item = None
     for foul in fouls:
         if foul["foul_type"] == foul_type:
@@ -177,6 +185,7 @@ def section_home(section):
         description = "you've completed the lesson! find out if you're a frisbee expert."
         url = 'quiz/1'
     return render_template('section_home.html', section=section, description=description, url=url)
+
 
 @app.route('/quiz/<string:id>')
 def quiz_question(id):
@@ -252,6 +261,24 @@ def submit_quiz():
             break
     
     return jsonify(quiz_ans = quiz_ans)
+
+@app.route('/update_progress', methods=['POST'])
+def update_progress():
+
+    global progress
+
+    data = request.get_json()
+
+    section = data['section_id']
+    id = data['id']
+
+    curr_section = progress[section]
+
+    if id > curr_section:
+        progress[section] = id
+        return jsonify({'id': id})
+    else:
+        return jsonify({'id': curr_section})
 
 if __name__ == '__main__':
    app.run(debug=True)
