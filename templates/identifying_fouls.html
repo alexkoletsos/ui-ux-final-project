@@ -109,6 +109,39 @@
             }
         });
     });
+
+    function updateProgress() {
+
+        console.log("poop");
+
+        var currentFoulId = foul.id;
+        console.log(currentRuleId);
+        var currentSection = 'fouls-pb';
+
+
+        $.ajax({
+            url: '/update_progress',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ section_id: currentSection, id: currentFoulId }),
+            success: function(response) {
+                console.log(response);
+                console.log(response.id)
+                console.log('Progress updated successfully');
+                var updatedFoulId = response.id;
+                updateProgressBar(updatedFoulId);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating progress:', error);
+            }
+        }); 
+    }
+
+    function updateProgressBar(foulId) {
+        var percentage = (foulId / 3) * 100;
+        $('#fouls-pb').css('width', percentage + '%');
+    } 
+
 </script>
 <style>
     .custom-card {

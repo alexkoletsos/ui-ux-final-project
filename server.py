@@ -39,13 +39,7 @@ fouls = [
         "foul_type": "defensive",
         "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "non-minor contact between the thrower and the marker is considered a foul."],
         "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]
-    },
-    {
-        "id":3, 
-        "foul_type": "dangerous play",
-        "relevant_info": ["if a player contacts an opponent before the disc arrives and thereby interferes with that opponent's attempt to make a play on the disc, that player has committed a foul.", "if a player's attempt to make a play on the disc causes significant impact with a legitimately positioned stationary opponent, before or after the disc arrives, that player has committed a foul.", "non-minor contact between the thrower and the marker is considered a foul."],
-        "media": ['offensive.mp4', ['offensive-1.jpg', 'offensive-2.jpg', 'offensive-3.jpg'], ['offensive-w-1.jpg', 'offensive-w-2.jpg', 'offensive-w-3.jpg']]
-    } 
+    }
     ]
 
 
@@ -255,13 +249,21 @@ def submit_quiz():
 
 @app.route('/update_progress', methods=['POST'])
 def update_progress():
-    furthest_page_reached = session.get('furthest_page_reached', 0)
-    current_page = int(request.form['current_page'])
 
-    if current_page > furthest_page_reached:
-        session['furthest_page_reached'] = current_page
+    global progress
 
-    return 'Success'
+    data = request.get_json()
+
+    section = data['section_id']
+    id = data['id']
+
+    curr_section = progress[section]
+
+    if id > curr_section:
+        progress[section] = id
+        return jsonify({'id': id})
+    else:
+        return jsonify({'id': curr_section})
 
 if __name__ == '__main__':
    app.run(debug=True)

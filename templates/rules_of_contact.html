@@ -67,51 +67,69 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('next-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            const currentRuleId = rule.id;
-            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
-            const nextIndex = (currentIndex + 1);
+        document.getElementById('next-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const nextIndex = (currentIndex + 1);
 
-            
-            console.log(nextIndex)
-            if (nextIndex < rules.length) {
-                const nextRuleType = rules[nextIndex].contact_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/rules/" + nextRuleType;
-            } else {
-                window.location.href = "/identifying-fouls";
-            }
-        });
-        document.getElementById('prev-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            const currentRuleId = rule.id;
-            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
-            const prevIndex = (currentIndex - 1);
+            
+            console.log(nextIndex)
+            if (nextIndex < rules.length) {
+                const nextRuleType = rules[nextIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + nextRuleType;
+            } else {
+                window.location.href = "/identifying-fouls";
+            }
+        });
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentRuleId = rule.id;
+            const currentIndex = rules.findIndex(rule => rule.id === currentRuleId);
+            const prevIndex = (currentIndex - 1);
 
-            
-            console.log(prevIndex)
-            if (prevIndex >= 0) {
-                const prevRuleType = rules[prevIndex].contact_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/rules/" + prevRuleType;
-            } else {
-                window.location.href = "/rules";
-            }
-        });
-    });
+            
+            console.log(prevIndex)
+            if (prevIndex >= 0) {
+                const prevRuleType = rules[prevIndex].contact_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/rules/" + prevRuleType;
+            } else {
+                window.location.href = "/rules";
+            }
+        });
+    });
 
-    function updateProgress(currentPage) {
+    function updateProgress() {
+
+        console.log("poop");
+
+        var currentRuleId = rule.id;
+        console.log(currentRuleId);
+        var currentSection = 'rules-pb';
+
+
         $.ajax({
-            type: 'POST',
             url: '/update_progress',
-            data: { current_page: currentPage },
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ section_id: currentSection, id: currentRuleId }),
             success: function(response) {
+                console.log(response);
+                console.log(response.id)
                 console.log('Progress updated successfully');
+                var updatedRuleId = response.id;
+                updateProgressBar(updatedRuleId);
             },
             error: function(xhr, status, error) {
                 console.error('Error updating progress:', error);
             }
-    });
-}
+        }); 
+    }
+
+    function updateProgressBar(ruleId) {
+        var percentage = (ruleId / 3) * 100;
+        $('#rules-pb').css('width', percentage + '%');
+    } 
 
 
 </script>
@@ -406,7 +424,7 @@
     </div>
 </div>
 <div class="lesson-button-container">
-    <a href="#" id="prev-page" class="lesson-button" onclick="updateProgress(currentPage)">back</a>
-    <a href="#" id="next-page" class="lesson-button">next</a>
+    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="next-page" class="lesson-button" onclick="updateProgress()">next</a>
 </div>
 {% endblock %}
