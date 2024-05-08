@@ -4,6 +4,70 @@
 <script>
     let result = {{ result | tojson }}
     let correct_num = {{ correct_num | tojson }}
+    let progbar = {{ progbar | tojson }}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(id) {
+        if (id !== 0) {
+            var percentage = (id / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    } 
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxesContainer = document.getElementById('checkboxes-container');
+        
+        for (const key in result) {
+            if (Object.hasOwnProperty.call(result, key)) {
+                const item = result[key];
+                // Create checkbox element
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'checkbox' + key;
+
+                // Set checked attribute if item is true
+                if (item === true) {
+                    checkbox.checked = true;
+                }
+
+                // Create label for checkbox
+                const label = document.createElement('label');
+                label.htmlFor = 'checkbox' + key;
+                label.classList.add(item === true ? 'checkmark' : 'cross');
+                label.innerHTML = item === true ? '&#10003;' : '&#10007;';
+
+                // Append checkbox and label to container
+                checkboxesContainer.appendChild(checkbox);
+                checkboxesContainer.appendChild(label);
+            }
+        }
+    });
+
+    function restartQuiz() {
+
+        console.log("poop");
+
+        $.ajax({
+            url: '/restart_quiz',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                console.log(response);
+                console.log('Quiz restarted successfully');
+                window.location.href = "/quiz";
+            },
+            error: function(xhr, status, error) {
+                console.error('Error restarting quiz:', error);
+            }
+        });
+    }
+
 </script>
 <style>
     .custom-card {
@@ -19,18 +83,68 @@
     .arrow{
         padding-top: 40px;
     }
+    body {
+        background-color: #F5F5DC;
+        background-color: #28511c;
+        font-family: 'Titillium Web';
+        font-weight: 400;
+        color: #F5F5DC;
+    }
+    .checkbox-container {
+        display: flex; /* Use flexbox */
+        align-items: center;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    label.checkmark,
+    label.cross {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border: 2px solid #F5F5DC; /* Change border color to white */
+        text-align: center;
+        font-size: 60px;
+        line-height: 50px;
+        background-color: transparent;
+        margin-right: 10px;
+    }
+    label.cross{
+        color: lightcoral;
+    }
+    .lesson-button {
+        margin-left: 20px;
+        font-size: 16px;
+        padding: 20px 10px;
+        border: 1px solid gray;
+        border-radius: 5px;
+        background-color: rgb(57, 113, 224);
+        text-decoration: none;
+        color: rgb(254, 254, 152);
+    }
+
+    a:hover {
+        text-decoration: none; 
+        color: inherit; 
+    }
 </style>
-<h2 style="padding: 20px;">your quiz results</h2>
-<div class="container-fluid">
+<h2 style="padding: 20px; font-size: 38px;">your quiz results</h2>
+<div class="container-fluid" style="padding: 40px;">
     <div class="row" style="padding-left: 20px;">
         {% if correct_num == 5 %}
-            <p>Congratulations!</p>
+        <h4 style="padding: 15px; font-size: 30px;">Congratulations!</h4>
         {% else %}
-            <p>Good work!</p>
+        <h4 style="padding: 15px; font-size: 30px;">Good work!</h4>
         {% endif %}
     </div>
     <div class="row" style="padding-left: 20px;">
-        <p>You answered {{ correct_num }} / 5 questions correctly.</p>
+        <h4 style="padding: 15px; font-size: 30px;">You answered {{ correct_num }} / 5 questions correctly.</h4>
     </div>
+    <div id="checkboxes-container" class="checkbox-container" style="padding-left: 20px; padding-top:15px;">
+        <!-- generate checkboxes dynamically -->
+    </div>
+    <a href="#" id="restart-quiz" class="lesson-button" onclick="restartQuiz()">Restart Quiz</a>
 </div> 
 {% endblock %}

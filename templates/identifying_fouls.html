@@ -4,6 +4,7 @@
 <script>
     let foul = {{ foul | tojson }}
     let fouls = {{ fouls | tojson }}
+    let progbar = {{ progbar | tojson }}
     let index = 0
 </script>
 <script>
@@ -97,8 +98,10 @@
             if (nextIndex < fouls.length) {
                 const nextFoulType = fouls[nextIndex].foul_type.toLowerCase().replace(/ /g, '-');
                 window.location.href = "/identifying-fouls/" + nextFoulType;
+                updateProgress();
             } else {
                 window.location.href = "/quiz";
+                updateProgress();
             }
         });
         document.getElementById('prev-page').addEventListener('click', function(event) {
@@ -123,7 +126,6 @@
         console.log("poop");
 
         var currentFoulId = foul.id;
-        console.log(currentRuleId);
         var currentSection = 'fouls-pb';
 
 
@@ -145,10 +147,21 @@
         }); 
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+        console.log(progbar.id);
+    });
+
     function updateProgressBar(foulId) {
-        var percentage = (foulId / 3) * 100;
-        $('#fouls-pb').css('width', percentage + '%');
+        if (foulId !== 0) {
+            var percentage = (foulId / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
     } 
+ 
 </script>
 <style>
     .custom-card {
