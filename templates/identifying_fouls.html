@@ -14,6 +14,7 @@
         var leftArrow = document.getElementById("prev-example");
         var rightArrow = document.getElementById("next-example");
         var header = document.querySelector(".card-label");
+        var subheader = document.getElementById("subheader");
         index = (index + 1) % foul.media.length;
         if (index === 0) {
             textContainer.style.display = "block";
@@ -22,6 +23,7 @@
             leftArrow.style.display = "none";
             rightArrow.style.display = "block";
             header.textContent = "RECALL:";
+            subheader.style.display = 'none';
         } else if (index === 1) {
             textContainer.style.display = "none";
             videoContainer.style.display = "flex";
@@ -29,6 +31,7 @@
             leftArrow.style.display = "block";
             rightArrow.style.display = "block";
             header.textContent = "IN REAL TIME...";
+            subheader.style.display = 'none';
         } else if (index === 2) {
             textContainer.style.display = "none";
             videoContainer.style.display = "none";
@@ -36,6 +39,7 @@
             leftArrow.style.display = "block";
             rightArrow.style.display = "none";
             header.textContent = "A FRAME-BY-FRAME...";
+            subheader.style.display = 'block';
         } 
     }
     function showPrevExample() {
@@ -45,6 +49,7 @@
         var leftArrow = document.getElementById("prev-example");
         var rightArrow = document.getElementById("next-example");
         var header = document.querySelector(".card-label");
+        var subh = document.querySelector(".subheader");
         index = (index - 1) % foul.media.length;
         if (index === 0) {
             textContainer.style.display = "block";
@@ -53,6 +58,7 @@
             leftArrow.style.display = "none";
             rightArrow.style.display = "block";
             header.textContent = "RECALL:";
+            subh.textContent = "";
         } else if (index === 1) {
             textContainer.style.display = "none";
             videoContainer.style.display = "flex";
@@ -60,6 +66,7 @@
             leftArrow.style.display = "block";
             rightArrow.style.display = "block";
             header.textContent = "A VIDEO IN REAL TIME...";
+            subh.textContent = "";
         } else if (index === 2) {
             textContainer.style.display = "none";
             videoContainer.style.display = "none";
@@ -67,6 +74,7 @@
             leftArrow.style.display = "block";
             rightArrow.style.display = "none";
             header.textContent = "A FRAME-BY-FRAME IN REAL TIME...";
+            subh.textContent = "click each image for a detailed play-by-play!";
         } 
     }
     function replaceImage(image, i) {
@@ -141,7 +149,6 @@
         var percentage = (foulId / 11) * 100;
         $('#fouls-pb').css('width', percentage + '%');
     } 
-
 </script>
 <style>
     .custom-card {
@@ -215,14 +222,19 @@
     }
 
 </style>
-<p style="padding: 20px 20px 0px 20px; font-size: 40px; color: #F5F5DC; font-weight: 300; font-size: 40px;">identifying fouls: {{ foul.foul_type }} </p>
+<p style="padding: 20px 20px 0px 20px; font-size: 40px; color: #F5F5DC; font-weight: 300; font-size: 40px;"> identifying fouls: {{ foul.foul_type.replace('-', ' ') }} </p>
 <div class="container-fluid">
     <div class="row justify-content-center" style="padding: 30px; margin: 0px;">
         <div class="col-lg-10">
             <div class="card custom-card">
-                <h3 class="row card-label" style="margin: 0px; padding: 30px;">
+                <h3 class="row card-label" style="padding: 30px 30px 0px 30px;">
                     RECALL:
                 </h3>
+                <div id = "subheader" class="row subheader" style="margin-bottom: 10px; display: none; color: #28511c; font-family: 'Titillium Web'; position: relative;">
+                    <div class="col-lg-12 d-flex align-items-center" style = 'margin-left: 20px;'>
+                        click each image for a detailed play-by-play!
+                    </div>
+                </div>
                     <!-- Content goes here -->
                     <div class="row d-flex" style="height: 415px; margin: 0px; max-height: 100%; overflow:auto; font-family: 'Titillium Web';">
                         <div class="col-lg-12 d-flex align-items-center" style="height: 100%;">
@@ -242,9 +254,6 @@
                                 </video>
                             </div>
                             <div id="frames-container" style="display: none;">
-                                <div class="row" style="margin-bottom: 10px; color: #28511c; font-family: 'Titillium Web';">
-                                    <p>click on each image for a detailed play-by-play!</p>
-                                </div>
                                 <!-- Display 3 frames side by side -->
                                 <div class="row justify-content-center" style="margin: 10px; position: relative; display: flex; vertical-align: center;">
                                     <div class="col-lg-4 col-md-4 col-sm-4 d-flex" style="justify-content: center; display: flex;">
@@ -256,7 +265,7 @@
                                     </div>
                                     <!-- Third image column -->
                                     <div class="col-lg-4 col-md-4 col-sm-4 d-flex" style="justify-content: center; display: flex;">
-                                        <img src="{{ url_for('static', filename=foul.media[1][1]) }}" alt="{{ foul.foul_type }} frame 3" class="img-fluid img3" style="position: relative; cursor: pointer;" onclick="replaceImage(this, 2)">
+                                        <img src="{{ url_for('static', filename=foul.media[1][2]) }}" alt="{{ foul.foul_type }} frame 3" class="img-fluid img3" style="position: relative; cursor: pointer;" onclick="replaceImage(this, 2)">
                                     </div>
                                 </div>                    
                             </div>
