@@ -4,6 +4,7 @@
 <script>
     let foul = {{ foul | tojson }}
     let fouls = {{ fouls | tojson }}
+    let progbar = {{ progbar | tojson }}
     let index = 0
 </script>
 <script>
@@ -84,39 +85,83 @@
         console.log(image)
     }
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('next-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            console.log("poop");
-            const currentFoulId = foul.id;
-            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
-            const nextIndex = (currentIndex + 1);
+        document.getElementById('next-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            console.log("poop");
+            const currentFoulId = foul.id;
+            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
+            const nextIndex = (currentIndex + 1);
 
-            
-            console.log(nextIndex)
-            console.log()
-            if (nextIndex < fouls.length) {
-                const nextFoulType = fouls[nextIndex].foul_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/identifying-fouls/" + nextFoulType;
-            } else {
-                window.location.href = "/quiz";
-            }
-        });
-        document.getElementById('prev-page').addEventListener('click', function(event) {
-            event.preventDefault();
-            const currentFoulId = foul.id;
-            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
-            const prevIndex = (currentIndex - 1);
+            
+            console.log(nextIndex)
+            console.log()
+            if (nextIndex < fouls.length) {
+                const nextFoulType = fouls[nextIndex].foul_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/identifying-fouls/" + nextFoulType;
+                updateProgress();
+            } else {
+                window.location.href = "/quiz";
+                updateProgress();
+            }
+        });
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentFoulId = foul.id;
+            const currentIndex = fouls.findIndex(foul => foul.id === currentFoulId);
+            const prevIndex = (currentIndex - 1);
 
-            
-            console.log(prevIndex)
-            if (prevIndex >= 0) {
-                const prevFoulType = fouls[prevIndex].foul_type.toLowerCase().replace(/ /g, '-');
-                window.location.href = "/identifying-fouls/" + prevFoulType;
-            } else {
-                window.location.href = "/identifying-fouls";
-            }
-        });
-    });
+            
+            console.log(prevIndex)
+            if (prevIndex >= 0) {
+                const prevFoulType = fouls[prevIndex].foul_type.toLowerCase().replace(/ /g, '-');
+                window.location.href = "/identifying-fouls/" + prevFoulType;
+            } else {
+                window.location.href = "/identifying-fouls";
+            }
+        });
+    });
+
+    function updateProgress() {
+
+        console.log("poop");
+
+        var currentFoulId = foul.id;
+        var currentSection = 'fouls-pb';
+
+
+        $.ajax({
+            url: '/update_progress',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ section_id: currentSection, id: currentFoulId }),
+            success: function(response) {
+                console.log(response);
+                console.log(response.id)
+                console.log('Progress updated successfully');
+                var updatedFoulId = response.id;
+                updateProgressBar(updatedFoulId);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating progress:', error);
+            }
+        }); 
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+        console.log(progbar.id);
+    });
+
+    function updateProgressBar(foulId) {
+        if (foulId !== 0) {
+            var percentage = (foulId / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    } 
+ 
 </script>
 <style>
     .custom-card {

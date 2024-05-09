@@ -10,6 +10,26 @@ function next_question() {
     console.log('Selected response:', selectedResponse);
 
     var currentId = window.location.pathname.split('/').pop();
+    var currentIdNum = parseInt(window.location.pathname.split('/').pop());
+
+    var currentSection = 'quiz-pb';
+
+    $.ajax({
+        url: '/update_progress',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ section_id: currentSection, id: currentIdNum }),
+        success: function(response) {
+            console.log(response);
+            console.log(response.id)
+            console.log('Progress updated successfully');
+            var updatedRuleId = response.id;
+            updateProgressBar(updatedRuleId);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating progress:', error);
+        }
+    });
         
     $.ajax({
         url: '/store_response',
@@ -28,7 +48,7 @@ function next_question() {
         error: function(xhr, status, error) {
             console.error('Error storing response: ' + error);
         }
-    });
+    }); 
 }
 
 function makeClickable(element) {
@@ -39,6 +59,26 @@ function makeClickable(element) {
 function submit_q(answers) {
 
     var currentId = window.location.pathname.split('/').pop();
+    var currentIdNum = parseInt(window.location.pathname.split('/').pop());
+
+    var currentSection = 'quiz-pb';
+
+    $.ajax({
+        url: '/update_progress',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ section_id: currentSection, id: currentIdNum }),
+        success: function(response) {
+            console.log(response);
+            console.log(response.id)
+            console.log('Progress updated successfully');
+            var updatedRuleId = response.id;
+            updateProgressBar(updatedRuleId);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating progress:', error);
+        }
+    });
 
     $.ajax({
         url: '/submit_quiz', // Replace with the actual endpoint to save quiz answers

@@ -1,7 +1,25 @@
+
 {% extends "layout.html" %}
 {% block content %}
 
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+<script>
+    let progbar = {{ progbar | tojson }}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(id) {
+        if (id !== 0) {
+            var percentage = (id / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    }
+</script>
 <style>
     body {
         color: #28511c;
@@ -63,15 +81,16 @@
 <script>
     // Toggle carrot arrow direction and collapse behavior when row is clicked
     $(document).ready(function() {
-    $('.navbar-row').click(function() {
-        console.log("Clicked"); // Debugging
-        var arrowDown = $(this).find('.arrow-down');
-        arrowDown.toggleClass('collapsed');
-        var rotation = arrowDown.hasClass('collapsed') ? '180deg' : '0deg';
-        arrowDown.css('transform', 'rotate(' + rotation + ')');
-        var target = $($(this).attr('href'));
-        target.toggleClass('show');
-    });
+        console.log("test");
+        $('.navbar-row').click(function() {
+            console.log("Clicked"); // Debugging
+            var arrowDown = $(this).find('.arrow-down');
+            arrowDown.toggleClass('collapsed');
+            var rotation = arrowDown.hasClass('collapsed') ? '180deg' : '0deg';
+            arrowDown.css('transform', 'rotate(' + rotation + ')');
+            var target = $($(this).attr('href'));
+            target.toggleClass('show');
+        });
 });
 </script>
 

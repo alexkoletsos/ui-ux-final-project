@@ -15,6 +15,27 @@
 }
 
 </style>
+<script>
+    let section = {{ section | tojson }}
+    let description = {{ description | tojson }}
+    let url = {{ url | tojson }}
+    let progbar = {{ progbar | tojson }}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(ruleId) {
+        if (ruleId !== 0) {
+            var percentage = (ruleId / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    } 
+
+</script>
 
 <div class="content-container">
 <div class="end-zone">

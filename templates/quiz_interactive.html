@@ -3,39 +3,41 @@
 <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
 <script>
     let question = {{ question | tojson }}
-</script>
-<script>
+    let quiz = {{ quiz | tojson }}
+    let progbar = {{ progbar | tojson }}
+    let answer = {{ answer | tojson }}
 
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('prev-page').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentQId = question.id;
+            const prevIndex = (currentQId - 1);
 
-    $(document).ready(function() {
+            console.log(prevIndex);
 
-        console.log("test");
-
-        $(".draggable-response").draggable({
-            revert: "invalid", // Snap back to original position if not dropped on a droppable target
-            zIndex: 1000, // Set a high z-index to ensure draggable element is on top
-        });
-
-        $("#b").droppable({
-
-            over: function(event, ui) {
-                console.log("over");
-                $( this ).addClass( "allow-drop" );
-            },
-
-            out: function(event, ui) {
-                console.log("out");
-                $( this ).removeClass( "allow-drop" );
-            },
-
-            drop: function( event, ui ) {
-                console.log("drop");
-                $( this ).removeClass( "allow-drop" );
+            
+            console.log(prevIndex)
+            if (prevIndex > 0) {
+                window.location.href = "/quiz/" + prevIndex;
+            } else {
+                window.location.href = "/quiz";
             }
-
         });
-
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProgressBar(progbar.id);
+    });
+
+    function updateProgressBar(id) {
+        if (id !== 0) {
+            var percentage = (id / 11) * 100;
+            $('#pb').css('width', percentage + '%');
+            $('#pb').text(percentage.toFixed(2) + '%');
+            $('#pb').css('color', '#F5F5DC');
+            console.log('fart');
+        }
+    } 
 </script>
 <style>
     .custom-card {
@@ -55,46 +57,61 @@
         /*object-fit: cover; /* Ensure media fills the container */
         
     }
-    .allow-drop {
-        position: relative;
-        display: inline-block;
-    }
+    
 
-    .allow-drop img {
-        display: block;
-    }
-
-    .allow-drop::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity here */
-    }
-    .button-container {
+    .lesson-button-container {
+        padding-top: 20px;
         position: relative;
     }
+
     .lesson-button {
-        top: 20px;
+        position: absolute;
+        bottom: 20px; /* Adjust as needed */
         font-size: 18px;
         padding: 10px;
         border: 1px solid gray;
-        border-radius: 15px;
+        border-radius: 5px;
         background-color: rgb(57, 113, 224);
         text-decoration: none;
         color: rgb(254, 254, 152);
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
     }
-    #start-lesson {
+
+    a:hover {
+        text-decoration: none; 
+        color: inherit; 
+    }
+
+    #prev-page {
         left: 20px;
     }
-    #submit-quiz:hover {
-        color: rgb(254, 254, 152);
-        background-color: rgb(37, 96, 214);
+
+    #submit-quiz {
+        right: 20px;
     }
     body {
+        background-color: #28511c;
+        font-weight: 300;
+        font-family: 'Kanit', sans-serif; 
+    }
+    .main {
+        height: 100vh;
+        color: #F5F5DC;
+    }
+    li {
+        font-family: 'Titillium Web';
+        font-weight: 300;
+        display: flex;
+        margin-bottom: 10px;
+    }
+    li::before {
+        content: "\2192";
+        display: inline-block;
+        height: 20px;
+        margin-left: -40px;
+        padding-right: 30px;
+    }
+    body {
+        background-color: #F5F5DC;
         background-color: #28511c;
         font-family: 'Titillium Web';
         font-weight: 400;
@@ -128,8 +145,9 @@
             </div>
         </div>
     {% endfor %}
-    <div class="button-container" style="padding-top: 20px; margin-bottom: 100px; text-align: right;">
-        <a href="#" id="submit-quiz" class="lesson-button">submit</a>
-    </div>
+</div>
+<div class="lesson-button-container">
+    <a href="#" id="prev-page" class="lesson-button">back</a>
+    <a href="#" id="submit-quiz" class="lesson-button">submit</a>
 </div>
 {% endblock %}
